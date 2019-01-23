@@ -40,6 +40,7 @@ public class Welcome {
             double col = size * random();
             Long cell = ((int) row) * size + (int) col;
             m=moves.create(cell, turn, round);
+            if(m==null) return "TURN:"+turn+" MOVE WRONG:"+cell;
         }while(m==null);
 
         System.out.println(m);

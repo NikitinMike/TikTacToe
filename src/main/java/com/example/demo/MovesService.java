@@ -13,7 +13,7 @@ public class MovesService {
     public Move create(Long cell, long turn, long round) {
         List <Move> moves = movesRepository.findAllByRound(round);
 //        moves.forEach((m)->System.out.print(m.getCell()+","));
-        moves = movesRepository.findAllByCell(cell);
+        moves = movesRepository.findAllByCellAndRound(cell,round);
         if(!moves.isEmpty()) return null;
         Move move=new Move(cell,turn,round);
         movesRepository.save(move);

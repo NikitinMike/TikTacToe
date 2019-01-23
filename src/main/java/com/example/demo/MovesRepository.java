@@ -7,4 +7,5 @@ import java.util.List;
 public interface MovesRepository extends JpaRepository<Move, Long> {
     List<Move> findAllByCell(Long cell);
     List<Move> findAllByRound(Long round);
+    List<Move> findAllByCellAndRound(Long cell, long round);
 }
