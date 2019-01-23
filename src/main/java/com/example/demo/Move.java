@@ -3,10 +3,14 @@ package com.example.demo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 
+@NoArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -27,7 +31,8 @@ public class Move implements Serializable {
         this.round=round;
     }
 
+    public Long getCell(){return cell;}
+
     @Override
-    public String toString() {return "MOVE:[id=" + id + ", Round=" + round+ ", Turn=" + turn + ", Move=" + cell + "]";}
-    // "MOVE:["+row+","+col+"]";
+    public String toString() {return "MOVE:[id=" + id + ", Round=" + round+ ", Move=" + turn + ", Cell=" + cell + "]";}
 }

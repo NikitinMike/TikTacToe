@@ -14,6 +14,9 @@ import static java.lang.Math.random;
 public class Welcome {
 
     @Autowired MovesService moves;
+    int turn=0;
+    int round=0;
+    Long size = 10L;
 
     @RequestMapping("/")
     public String welcome(){
@@ -22,18 +25,27 @@ public class Welcome {
     }
 
 //    @RequestMapping("/move/{row}/{col}")
-    @RequestMapping("/move")
+    @RequestMapping("/move/{round}")
+//    @RequestMapping("/move")
     @ResponseBody
 //    public String move(@PathVariable int row, @PathVariable int col){
-    public String move(){
-        Long size = 10L;
-//        return "WELCOME!";
-        double row=size*random();
-        double col=size*random();
-        Long cell=((int)row)*size+(int)col;
-        Move m = moves.create(cell,0L,0L);
+    public String move(@PathVariable int round) {
+
+        turn = (this.round == round) ? turn + 1 : 0;
+        this.round = round;
+
+        Move m = null;
+        do{
+            double row = size * random();
+            double col = size * random();
+            Long cell = ((int) row) * size + (int) col;
+            m=moves.create(cell, turn, round);
+        }while(m==null);
+
         System.out.println(m);
         return m.toString();
+//        return "WELCOME!";
+
     }
 
 }
