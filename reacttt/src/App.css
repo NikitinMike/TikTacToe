@@ -36,8 +36,13 @@ body{ padding:1em; font-family:arial; }
     margin-bottom: 3px;
     padding: 1px;
     min-width: 45px;
+    min-height: 50px;
     text-align: center;
 }
+
+:disabled {
+  /* background: rgb(230, 10, 39); */
+} 
 
 .flex-itm2 {
   background: rgb(92, 197, 92);
