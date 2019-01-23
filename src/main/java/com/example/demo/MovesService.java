@@ -10,35 +10,10 @@ public class MovesService {
 
     @Autowired MovesRepository movesRepository;
 
-    public Move create(Long cell ) {
-        Move move=new Move(cell);
+    public Move create(Long cell, long turn, long round) {
+        Move move=new Move(cell,turn,round);
         movesRepository.save(move);
         return move;
     }
-
-/*
-    public Account get(String accountNumber) {
-        return accountRepository.findAccountByNumber(accountNumber);
-    }
-
-    public List<Account> list() {
-//        System.out.println("LIST");
-        return accountRepository.findAll();
-    }
-
-    public boolean delete(String accountNumber) {
-        Account account = get(accountNumber);
-        if (account == null) return false;
-        if (account.getLicenses().size() > 0) return false;
-        accountRepository.delete(account);
-        return true;
-    }
-
-    public License addLicense(Account account){
-//        System.out.println(account.getNumber());
-        License license = licenseService.create(account);
-        return license;
-    }
-    */
 
 }

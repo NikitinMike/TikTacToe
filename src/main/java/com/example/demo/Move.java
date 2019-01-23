@@ -17,39 +17,17 @@ public class Move implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String message;
     private Long cell;
     private Long turn;
     private Long round;
-    private String timestamp;
 
-    Move(Long cell){
+    Move(Long cell,Long turn,Long round){
         this.cell=cell;
+        this.turn=turn;
+        this.round=round;
     }
-
-//    public ObjectId getId() {
-//        return id;
-//    }
-//    public void setId(ObjectId id) {
-//        this.id = id;
-//    }
-//
-//    public String getMessage() {
-//        return message;
-//    }
-//    public void setMessage(final String message) {
-//        this.message = message;
-//    }
-//
-//    public String getTimestamp() {
-//        return timestamp;
-//    }
-//    public void setTimestamp(final String timestamp) {
-//        this.timestamp = timestamp;
-//    }
 
     @Override
-    public String toString() {
-        return "LogItem [id=" + id + ", message=" + message + ", timestamp=" + timestamp + "]";
-    }
+    public String toString() {return "MOVE:[id=" + id + ", Round=" + round+ ", Turn=" + turn + ", Move=" + cell + "]";}
+    // "MOVE:["+row+","+col+"]";
 }
