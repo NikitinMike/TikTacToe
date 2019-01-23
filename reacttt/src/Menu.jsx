@@ -3,15 +3,12 @@ import React from 'react'
 class MenuItem extends React.Component {
 
     render () {
-        
-        // console.log(item);
-        // const table = this.state.table
-        // console.log(table);
-        // table[+itm]=itm;
-        // this.setState({table});
-        const stat=false;
+        console.log(this.props.item)
+        const disabled = false; // this.state.disabled;
+        // [this.props.item];
+        // this.state.disabled[this.props.item]
         return (
-            <button className="flex-itm" onClick={this.props.click} disabled={stat}>
+            <button className="flex-itm" onClick={this.props.click} disabled={disabled}>
                 {this.props.item}
             </button>
         )

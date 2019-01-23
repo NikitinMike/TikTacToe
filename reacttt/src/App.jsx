@@ -10,7 +10,18 @@ function Welcome(props) { return <h1 hidden>Hello, {props.name}!</h1>;}
 
 class App extends React.Component {
 
-  state = { state:[],
+  state = { disabled: [
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0
+    ],
     table : [
        0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
       10,11,12,13,14,15,16,17,18,19,
@@ -28,10 +39,10 @@ class App extends React.Component {
   menuBarClick = (e) => {
     // e.preventDefault();
     const item=e.target.innerText
-    const table = this.state.table
-    // table[item]=!table[item]
-    console.log(item,this.state.table[item])
-    this.setState({table});
+    const disabled = this.state.disabled
+    console.log(item,disabled[item])
+    disabled[item]=true;
+    this.setState({disabled});
     // this.render()
   }
 
