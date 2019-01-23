@@ -1,0 +1,127 @@
+
+.App {
+  text-align: left;
+}
+
+body{ padding:1em; font-family:arial; }
+
+.welcome{
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+}
+
+.container {
+  grid-template-columns: 100px 50px 100px;
+  grid-template-rows: 80px auto 80px; 
+  grid-column-gap: 10px;
+  grid-row-gap: 15px;
+}
+
+/* .flex{ display: flex; } */
+.flex {
+  background: rgb(57, 161, 231);
+  padding: 9px;
+  display: flex;
+  justify-content: space-evenly;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-itm {
+    background: rgb(92, 197, 92);
+    font-size: 2rem;
+    color: #eee;
+    margin-left: 5px;
+    margin-top: 2px;
+    margin-bottom: 3px;
+    padding: 1px;
+    min-width: 45px;
+    text-align: center;
+}
+
+.flex-itm2 {
+  background: rgb(92, 197, 92);
+  font-size: 1.4rem;
+  color: #FFF;
+  padding: 2px;
+  padding-left: 9px;
+  padding-right: 9px;
+  font-family: monospace;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.colAccount {
+  /* background: lightgray; */
+}
+
+#row:checked ~ .flex {
+    width: 325px;
+}
+
+#column:checked ~ .flex {
+    flex-direction: column;
+    height: 350px;
+}
+
+.btn {
+    background-color: rgb(30, 240, 255);
+    /* border: none; */
+    /* color: white; */
+    padding: 2px 2px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+    background-color: red;
+}
+
+h1 {
+  margin-block-start: 15px;
+  text-align: center;
+  color: brown;
+}
+
+table {
+  margin-left: 20pt;
+  margin-top: 10px;
+  width: 94%;
+  /* border: 1px 1px 1px 1px; */
+  border-color: brown;
+}
+
+td {
+    padding-left: 9px;
+    padding-right: 9px;
+    padding-bottom: 4px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 500px;
+}
+
+thead {
+  text-align: center ;
+  background-color: black;
+  color: aquamarine;
+  font-size: 150%;
+  font-weight: bold;
+}
+
+tfoot {
+  text-align: center ;
+  background-color: gray;
+  color: aquamarine;
+}
+
+caption {
+  font-weight: bolder;
+  text-align: center ;
+  background-color: black;
+  color: aqua ;
+  font-size: 200%;
+  padding: 9px;
+}
