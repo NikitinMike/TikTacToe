@@ -14,7 +14,7 @@ public class Welcome {
     @Autowired MovesService moves;
     int turn=0;
     int round=0;
-    Long dimension = 10L;
+//    int dimension = 3;
 
     @RequestMapping("/")
     public String welcome(){
@@ -22,29 +22,21 @@ public class Welcome {
         return "welcome";
     }
 
-//    @RequestMapping("/move/{row}/{col}")
-    @RequestMapping("/move/{round}")
+    @RequestMapping("/move/{dimension}/{round}/{row}/{col}")
+//    @RequestMapping("/move/{round}")
 //    @RequestMapping("/move")
     @ResponseBody
     @CrossOrigin // (origins = "http://localhost:3000")
 //    public String move(@PathVariable int row, @PathVariable int col){
-    public Move move(@PathVariable int round) {
+    public Move move(@PathVariable int dimension,@PathVariable int round,@PathVariable int row,@PathVariable int col) {
 
         turn = (this.round == round) ? turn + 1 : 0;
         this.round = round;
 
-        Move m = null;
-
-//        do{
-            double row = dimension * random();
-            double col = dimension * random();
-            Long cell = ((int) row) * dimension + (int) col;
-            m=moves.create(cell, turn, round);
-//            if(m==null) return m; //  "TURN:"+turn+" MOVE WRONG:"+cell;
-//        }while(m==null);
+        int cell = row*dimension+col;
+        Move m=moves.create(cell,turn,round,row,col);
 
         System.out.println(m);
-//        return m.toString();
 //        return m.toString();
 //        return "WELCOME!";
         return m;

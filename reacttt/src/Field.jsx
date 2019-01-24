@@ -12,33 +12,14 @@ class Cell extends React.Component {
 
     state = { cellDisabled:false } 
 
-    request = async () => {
-        // fetch(`http://localhost:8080/move/${round}`
-        //         ,{
-        //             'mode':'cors',
-        //             'method': 'GET',
-        //             headers: {
-        //                 // 'Accept': 'application/json',
-        //                 'Content-Type': 'application/json'
-        //                 // 'Content-Type': 'application/json;charset=UTF-8'
-        //             }
-        //             // ,credentials: 'include' 
-        //         }
-        //     )
-        // // .then(response => { console.log(response) })
-        // .then(msg => { console.log(msg) })
-        // .catch(error => { console.log('Failed', error) });
-  
+    request = async (row,col) => {
         // read our JSON
-        let response = await fetch(`http://localhost:8080/move/${round}`)
+        let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${row}/${col}`)
         let data = await response.json();
         console.log(data)    
     }
 
     moveClick = (e) => {
-
-        this.request();
-
         // console.log(e.target.innerText)
         // if (e.target.innerText) return;
         // const item=e.target.innerText
@@ -51,13 +32,20 @@ class Cell extends React.Component {
         e.target.innerText="X"
         this.move(e,0)
         GAME[e.target.id]=+1;
+
+        const id=e.target.id
+        const col=id%dimension
+        const row=(id-col)/dimension
+        console.log(id,":",row,",",col)
+        this.request(row,col);
+
         // console.log(GAME.some(isNull));
         if(!GAME.some(isNull)) 
             e.target.parentNode.style.background="RED"
             // console.log(GAME)
             // console.log("GAME OVER")
             // console.log(e.target.parentNode.style)
-    }
+        }
 
     move(e,n) {
         if(n>SIZE) return;

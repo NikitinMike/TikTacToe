@@ -21,18 +21,22 @@ public class Move implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long cell;
-    private Long turn;
-    private Long round;
+    private int row;
+    private int col;
+    private int cell;
+    private int turn;
+    private int round;
 
-    Move(Long cell,Long turn,Long round){
+    Move(int cell,int turn,int round,int row,int col){
         this.cell=cell;
         this.turn=turn;
         this.round=round;
+        this.row=row;
+        this.col=col;
     }
 
-    public Long getCell(){return cell;}
+    public int getCell(){return cell;}
 
     @Override
-    public String toString() {return "MOVE:[id=" + id + ", Round=" + round+ ", Move=" + turn + ", Cell=" + cell + "]";}
+    public String toString() {return "MOVE:[id=" + id + ", Round=" + round+ ", Turn=" + turn + ", Cell=" + cell+ ", Row=" + row + ", Col=" + col + "]";}
 }
