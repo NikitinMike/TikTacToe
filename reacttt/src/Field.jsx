@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {dimension} from './App'
-var size=dimension*dimension-1;
+var SIZE=dimension*dimension;
  
 class Cell extends React.Component {
 
@@ -23,8 +23,8 @@ class Cell extends React.Component {
     }
 
     move(e,n) {
-        if(n>size) return;
-        const cell=Math.floor(Math.random()*size);
+        if(n>SIZE) return;
+        const cell=Math.floor(Math.random()*SIZE);
         const item=e.target.parentNode.childNodes[cell]
         // console.log(cell,e.target.parentNode.childNodes[cell])
         if (item.innerText) this.move(e,n+1)
@@ -44,12 +44,12 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {table : [] } 
+    state = {table:[]}
 
     componentWillMount(){
-        size=dimension*dimension-1;
+        SIZE=dimension*dimension;
         const {table} = this.state
-        for(var i=0;i<=size;i++) table[i]=i;
+        for(var i=0;i<SIZE;i++) table[i]=i;
         this.setState(table);
         // console.log(this.state.table);
     }
