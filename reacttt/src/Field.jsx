@@ -2,26 +2,34 @@ import React from 'react'
 
 import {dimension} from './App'
 var SIZE=dimension*dimension;
-const STATE = {table:[]}
+const GAME=[];
+
+function isPositive(number) {
+    return number>0;
+  }
 
 class Cell extends React.Component {
 
-    state = { disabled:false } 
+    state = { cellDisabled:false } 
+
+    // isEmpty(val) {return val.isEmpty;}
 
     moveClick = (e) => {
         // console.log(e.target.innerText)
         // if (e.target.innerText) return;
         // const item=e.target.innerText
-        var {disabled} = this.state
-        disabled=!disabled;
-        // disabled=true;
+        var {cellDisabled} = this.state
+        // cellDisabled=!cellDisabled;
+        cellDisabled=true;
         console.log(">",e.target.id)
-        this.setState({disabled});
+        this.setState({cellDisabled});
         // this.render()
         e.target.innerText="X"
         this.move(e,0)
-        STATE[e.target.id]='x';
-        console.log(STATE);
+        GAME[e.target.id]='x';
+        console.log(GAME)
+        // .some(isPositive));
+        // if(GAME.length===SIZE) console.log("GAME OVER")
     }
 
     move(e,n) {
@@ -33,13 +41,13 @@ class Cell extends React.Component {
         else {
             item.innerText="O"
             console.log("<",item.id)
-            STATE[item.id]='o';
+            GAME[item.id]='o';
         }
     }
 
     render () {
         return (
-            <button className="flex-itm" onClick={this.moveClick} disabled={this.state.disabled} id={this.props.item}>
+            <button className="flex-itm" onClick={this.moveClick} disabled={this.state.cellDisabled} id={this.props.item}>
                 {/* &nbsp; */}
                 {/* {this.props.item} */}
             </button>
