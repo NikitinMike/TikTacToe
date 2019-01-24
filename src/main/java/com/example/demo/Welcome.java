@@ -31,11 +31,8 @@ public class Welcome {
     }
 
     @RequestMapping("/move/{dimension}/{round}/{user}/{row}/{col}")
-//    @RequestMapping("/move/{round}")
-//    @RequestMapping("/move")
     @ResponseBody
     @CrossOrigin // (origins = "http://localhost:3000")
-//    public String move(@PathVariable int row, @PathVariable int col){
     public Move move(@PathVariable int dimension,@PathVariable int round,@PathVariable int user,@PathVariable int row,@PathVariable int col) {
 
         turn = (this.round == round) ? turn + 1 : 0;
@@ -46,7 +43,6 @@ public class Welcome {
 
         System.out.println(m);
 //        return m.toString();
-//        return "WELCOME!";
         return m;
 
     }
