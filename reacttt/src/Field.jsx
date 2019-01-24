@@ -4,13 +4,11 @@ import {dimension} from './App'
 var SIZE=dimension*dimension;
 const GAME=[];
 
-function isNull(number) {return number===0;}
+const isNull = (val) => val===0;
 
 class Cell extends React.Component {
 
     state = { cellDisabled:false } 
-
-    // isEmpty(val) {return val.isEmpty;}
 
     moveClick = (e) => {
         // console.log(e.target.innerText)
@@ -26,11 +24,11 @@ class Cell extends React.Component {
         this.move(e,0)
         GAME[e.target.id]=+1;
         // console.log(GAME.some(isNull));
-        if(!GAME.some(isNull)) {
+        if(!GAME.some(isNull)) 
+            e.target.parentNode.style.background="RED"
+            // console.log(GAME)
             // console.log("GAME OVER")
             // console.log(e.target.parentNode.style)
-            e.target.parentNode.style.background="RED"
-        }
     }
 
     move(e,n) {
@@ -38,12 +36,10 @@ class Cell extends React.Component {
         const cell=Math.floor(Math.random()*SIZE);
         const item=e.target.parentNode.childNodes[cell]
         // console.log(cell,e.target.parentNode.childNodes[cell])
-        if (item.innerText) this.move(e,n+1)
-        else {
-            item.innerText="O"
-            console.log("O<",item.id)
-            GAME[item.id]=-1;
-        }
+        if (item.innerText) return this.move(e,n+1)
+        item.innerText="O"
+        console.log("O<",item.id)
+        GAME[item.id]=-1;
     }
 
     render () {
@@ -61,13 +57,24 @@ class Field extends React.Component {
 
     state = {table:[]}
 
-    componentWillMount(){
+    componentDidMount(){
         // e.preventDefault();
+        this.reset(true);
+        // console.log(this.state.table);
+    }
+
+    reset(){
         SIZE=dimension*dimension;
         const {table} = this.state
         for(var i=0;i<SIZE;i++) {table[i]=i;GAME[i]=0;}
         this.setState(table);
-        // console.log(this.state.table);
+    }
+
+    dblClick = (e) => {
+        // console.log(e)
+        // GAME=[];
+        // this.reset();
+        window.location = "/";
     }
 
     render () {
@@ -76,8 +83,9 @@ class Field extends React.Component {
         // const endGame=GAME.some(isNull);
         // console.log(endGame)
         return (
-            <div className="field" style={{maxWidth: this.props.maxWidth}} id="gameField">
+            <div className="field" style={{maxWidth: this.props.maxWidth}} id="gameField" onDoubleClick={this.dblClick}>
                 {this.state.table.map(item => <Cell key={item} item={item} />)}
+                <button onClick={this.dblClick} >REPLAY</button>
             </div>
         )
     }
