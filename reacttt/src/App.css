@@ -18,7 +18,7 @@ body{ padding:1em; font-family:arial; }
 }
 
 /* .flex{ display: flex; } */
-.flex {
+.field {
   background: rgb(57, 161, 231);
   padding: 9px;
   display: flex;

@@ -26,7 +26,11 @@ class Cell extends React.Component {
         this.move(e,0)
         GAME[e.target.id]=+1;
         // console.log(GAME.some(isNull));
-        if(!GAME.some(isNull)) console.log("GAME OVER")
+        if(!GAME.some(isNull)) {
+            // console.log("GAME OVER")
+            // console.log(e.target.parentNode.style)
+            e.target.parentNode.style.background="RED"
+        }
     }
 
     move(e,n) {
@@ -69,8 +73,10 @@ class Field extends React.Component {
     render () {
         // e.preventDefault();
         // console.log(this.state)
+        // const endGame=GAME.some(isNull);
+        // console.log(endGame)
         return (
-            <div className="flex" style={{maxWidth: this.props.maxWidth}}>
+            <div className="field" style={{maxWidth: this.props.maxWidth}} id="gameField">
                 {this.state.table.map(item => <Cell key={item} item={item} />)}
             </div>
         )
