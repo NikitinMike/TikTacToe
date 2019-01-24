@@ -4,9 +4,7 @@ import {dimension} from './App'
 var SIZE=dimension*dimension;
 const GAME=[];
 
-function isPositive(number) {
-    return number>0;
-  }
+function isNull(number) {return number===0;}
 
 class Cell extends React.Component {
 
@@ -21,15 +19,14 @@ class Cell extends React.Component {
         var {cellDisabled} = this.state
         // cellDisabled=!cellDisabled;
         cellDisabled=true;
-        console.log(">",e.target.id)
+        console.log("X>",e.target.id)
         this.setState({cellDisabled});
         // this.render()
         e.target.innerText="X"
         this.move(e,0)
-        GAME[e.target.id]='x';
-        console.log(GAME)
-        // .some(isPositive));
-        // if(GAME.length===SIZE) console.log("GAME OVER")
+        GAME[e.target.id]=+1;
+        // console.log(GAME.some(isNull));
+        if(!GAME.some(isNull)) console.log("GAME OVER")
     }
 
     move(e,n) {
@@ -40,8 +37,8 @@ class Cell extends React.Component {
         if (item.innerText) this.move(e,n+1)
         else {
             item.innerText="O"
-            console.log("<",item.id)
-            GAME[item.id]='o';
+            console.log("O<",item.id)
+            GAME[item.id]=-1;
         }
     }
 
@@ -64,7 +61,7 @@ class Field extends React.Component {
         // e.preventDefault();
         SIZE=dimension*dimension;
         const {table} = this.state
-        for(var i=0;i<SIZE;i++) table[i]=i;
+        for(var i=0;i<SIZE;i++) {table[i]=i;GAME[i]=0;}
         this.setState(table);
         // console.log(this.state.table);
     }
