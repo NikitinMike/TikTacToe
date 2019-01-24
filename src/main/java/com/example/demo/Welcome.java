@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static java.lang.Math.random;
 
 //@Rest
@@ -16,25 +18,31 @@ public class Welcome {
     int round=0;
 //    int dimension = 3;
 
-    @RequestMapping("/")
+    @RequestMapping("/welcome")
     public String welcome(){
-//        return "WELCOME!";
-        return "welcome";
+//        return "welcome";
+        return "WELCOME!";
     }
 
-    @RequestMapping("/move/{dimension}/{round}/{row}/{col}")
+    @ResponseBody
+    @RequestMapping("/")
+    public List<Move> getAll(){
+        return moves.getAll(); // .forEach(m-> System.out.println(m));
+    }
+
+    @RequestMapping("/move/{dimension}/{round}/{user}/{row}/{col}")
 //    @RequestMapping("/move/{round}")
 //    @RequestMapping("/move")
     @ResponseBody
     @CrossOrigin // (origins = "http://localhost:3000")
 //    public String move(@PathVariable int row, @PathVariable int col){
-    public Move move(@PathVariable int dimension,@PathVariable int round,@PathVariable int row,@PathVariable int col) {
+    public Move move(@PathVariable int dimension,@PathVariable int round,@PathVariable int user,@PathVariable int row,@PathVariable int col) {
 
         turn = (this.round == round) ? turn + 1 : 0;
         this.round = round;
 
         int cell = row*dimension+col;
-        Move m=moves.create(cell,turn,round,row,col);
+        Move m=moves.create(cell,turn,round,row,col,user);
 
         System.out.println(m);
 //        return m.toString();

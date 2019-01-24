@@ -12,7 +12,7 @@ import Field from './Field';
 
 function Welcome(props) { return <h1 hidden>Hello, {props.name}!</h1>;}
 
-export const dimension=4;
+export const dimension=3;
 
 class App extends React.Component {
 

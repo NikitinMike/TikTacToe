@@ -8,4 +8,5 @@ public interface MovesRepository extends JpaRepository<Move, Long> {
     List<Move> findAllByCell(int cell);
     List<Move> findAllByRound(int round);
     List<Move> findAllByCellAndRound(int cell, int round);
+    List<Move> findAllByUser(int user);
 }

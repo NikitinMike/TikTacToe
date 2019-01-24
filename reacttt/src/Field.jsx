@@ -12,9 +12,12 @@ class Cell extends React.Component {
 
     state = { cellDisabled:false } 
 
-    request = async (row,col) => {
+    request = async (id,user) => {
+        const col=id%dimension
+        const row=(id-col)/dimension
+        console.log(id,":",row,",",col)
         // read our JSON
-        let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${row}/${col}`)
+        let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${user}/${row}/${col}`)
         let data = await response.json();
         console.log(data)    
     }
@@ -32,19 +35,13 @@ class Cell extends React.Component {
         e.target.innerText="X"
         this.move(e,0)
         GAME[e.target.id]=+1;
-
         const id=e.target.id
-        const col=id%dimension
-        const row=(id-col)/dimension
-        console.log(id,":",row,",",col)
-        this.request(row,col);
-
+        this.request(id,1);
         // console.log(GAME.some(isNull));
+        // console.log(e.target.parentNode.style)
         if(!GAME.some(isNull)) 
             e.target.parentNode.style.background="RED"
-            // console.log(GAME)
-            // console.log("GAME OVER")
-            // console.log(e.target.parentNode.style)
+            // console.log("GAME OVER"+GAME)
         }
 
     move(e,n) {
@@ -56,6 +53,7 @@ class Cell extends React.Component {
         item.innerText="O"
         console.log("O<",item.id)
         GAME[item.id]=-1;
+        this.request(item.id,-1);
     }
 
     render () {
@@ -81,7 +79,7 @@ class Field extends React.Component {
 
     reset(){
         SIZE = dimension*dimension;
-        round = Math.floor(Math.random()*SIZE);
+        round = Math.floor(Math.random()*999)+dimension*1000;
         const {table} = this.state
         for(var i=0;i<SIZE;i++) {table[i]=i;GAME[i]=0;}
         this.setState(table);

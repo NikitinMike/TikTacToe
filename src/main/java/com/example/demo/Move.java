@@ -26,17 +26,19 @@ public class Move implements Serializable {
     private int cell;
     private int turn;
     private int round;
+    private int user;
 
-    Move(int cell,int turn,int round,int row,int col){
+    Move(int cell,int turn,int round,int row,int col,int user){
         this.cell=cell;
         this.turn=turn;
         this.round=round;
         this.row=row;
         this.col=col;
+        this.user=user;
     }
 
     public int getCell(){return cell;}
 
     @Override
-    public String toString() {return "MOVE:[id=" + id + ", Round=" + round+ ", Turn=" + turn + ", Cell=" + cell+ ", Row=" + row + ", Col=" + col + "]";}
+    public String toString() {return "MOVE:[id=" + id + ", Round=" + round+ ", User=" + user + ", Turn=" + turn + ", Cell=" + cell+ ", Row=" + row + ", Col=" + col + "]";}
 }
