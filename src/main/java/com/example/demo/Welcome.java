@@ -3,7 +3,12 @@ package com.example.demo;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.util.List;
 
@@ -20,21 +25,26 @@ public class Welcome {
 
     @RequestMapping("/welcome")
     public String welcome(){
-//        return "welcome";
         return "WELCOME!";
     }
 
-    @ResponseBody
+//    @ResponseBody
     @RequestMapping("/")
-    public List<Move> getAll(){
-        return moves.getAll(); // .forEach(m-> System.out.println(m));
+    public String /*List<Move>*/ getAll(Model model){
+        model.addAttribute("moves", moves.getAll());
+        return "welcome";
     }
 
-    @RequestMapping("/move/{dimension}/{round}/{user}/{row}/{col}")
     @ResponseBody
     @CrossOrigin // (origins = "http://localhost:3000")
-    public Move move(@PathVariable int dimension,@PathVariable int round,@PathVariable int user,@PathVariable int row,@PathVariable int col) {
-
+    @RequestMapping("/move/{dimension}/{round}/{user}/{row}/{col}")
+    public Move move(
+        @PathVariable int dimension,
+        @PathVariable int round,
+        @PathVariable int user,
+        @PathVariable int row,
+        @PathVariable int col
+    ) {
         turn = (this.round == round) ? turn + 1 : 0;
         this.round = round;
 
@@ -42,9 +52,7 @@ public class Welcome {
         Move m=moves.create(cell,turn,round,row,col,user);
 
         System.out.println(m);
-//        return m.toString();
         return m;
-
     }
 
 }

@@ -40,5 +40,8 @@ public class Move implements Serializable {
     public int getCell(){return cell;}
 
     @Override
-    public String toString() {return "MOVE:[id=" + id + ", Round=" + round+ ", User=" + user + ", Turn=" + turn + ", Cell=" + cell+ ", Row=" + row + ", Col=" + col + "]";}
+    public String toString() {
+        return "MOVE:[id=" + id + ", Round=" + round+ ", User=" + user + ", Turn=" + turn
+                + ", Cell=" + cell+ ", Row=" + row + ", Col=" + col + "]";
+    }
 }
