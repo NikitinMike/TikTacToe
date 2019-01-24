@@ -8,6 +8,8 @@ class Cell extends React.Component {
     state = { disabled:false } 
 
     moveClick = (e) => {
+        console.log(e.target.innerText)
+        // if (e.target.innerText) return;
         // e.preventDefault();
         // const item=e.target.innerText
         var {disabled} = this.state
