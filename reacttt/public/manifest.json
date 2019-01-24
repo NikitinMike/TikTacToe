@@ -1,6 +1,6 @@
 {
-  "short_name": "AdminApp",
-  "name": "Licenses AdminApp",
+  "short_name": "TikTacToe",
+  "name": "TikTacToe",
   "icons": [
     {
       "src": "favicon.ico",

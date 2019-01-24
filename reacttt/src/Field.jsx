@@ -5,12 +5,40 @@ var SIZE=dimension*dimension;
 const GAME=[];
 
 const isNull = (val) => val===0;
+// const round = (size) => Math.floor(Math.random()*size);
+var round = SIZE;
 
 class Cell extends React.Component {
 
     state = { cellDisabled:false } 
 
+    request = async () => {
+        // fetch(`http://localhost:8080/move/${round}`
+        //         ,{
+        //             'mode':'cors',
+        //             'method': 'GET',
+        //             headers: {
+        //                 // 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json'
+        //                 // 'Content-Type': 'application/json;charset=UTF-8'
+        //             }
+        //             // ,credentials: 'include' 
+        //         }
+        //     )
+        // // .then(response => { console.log(response) })
+        // .then(msg => { console.log(msg) })
+        // .catch(error => { console.log('Failed', error) });
+  
+        // read our JSON
+        let response = await fetch(`http://localhost:8080/move/${round}`)
+        let data = await response.json();
+        console.log(data)    
+    }
+
     moveClick = (e) => {
+
+        this.request();
+
         // console.log(e.target.innerText)
         // if (e.target.innerText) return;
         // const item=e.target.innerText
@@ -64,7 +92,8 @@ class Field extends React.Component {
     }
 
     reset(){
-        SIZE=dimension*dimension;
+        SIZE = dimension*dimension;
+        round = Math.floor(Math.random()*SIZE);
         const {table} = this.state
         for(var i=0;i<SIZE;i++) {table[i]=i;GAME[i]=0;}
         this.setState(table);
