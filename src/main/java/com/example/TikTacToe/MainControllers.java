@@ -17,13 +17,21 @@ public class MainControllers {
     @Autowired MovesService moves;
     int turn=0;
     int round=0;
-//    int dimension = 3;
+    int dimension = 3;
 
-//    @ResponseBody
     @RequestMapping({"/welcome","/"})
     public String welcome(){
 //        return "WELCOME!";
         return "welcome";
+    }
+
+//    @ResponseBody
+    @RequestMapping("/{dimension}")
+    public String resize(@PathVariable int dimension,Model model){
+        this.dimension=dimension;
+        model.addAttribute("dimension", dimension);
+        return "welcome";
+//        return dimension;
     }
 
     @RequestMapping("/moves")
