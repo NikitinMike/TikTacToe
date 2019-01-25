@@ -64,12 +64,12 @@ public class Welcome {
         return "welcome";
     }
 
+    @ResponseBody
     @RequestMapping("/results")
-    public String result(Model model){
-        List<Long> rounds=moves.listRounds();
-//        model.addAttribute("moves", rounds);
+    public List<Long> result(){
+//        List<Long> rounds=moves.listRounds();
 //        rounds.forEach(t-> System.out.println(t));
-        return "welcome";
+        return moves.listRounds();
     }
 
 }

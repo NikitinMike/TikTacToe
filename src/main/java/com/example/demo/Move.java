@@ -25,10 +25,10 @@ public class Move implements Serializable {
     private int col;
     private int cell;
     private int turn;
-    private int round;
+    private Long round;
     private int user;
 
-    Move(int cell,int turn,int round,int row,int col,int user){
+    Move(int cell,int turn,Long round,int row,int col,int user){
         this.cell=cell;
         this.turn=turn;
         this.round=round;
@@ -38,6 +38,7 @@ public class Move implements Serializable {
     }
 
     public int getCell(){return cell;}
+    public Long getRound(){return round;}
 
     @Override
     public String toString() {

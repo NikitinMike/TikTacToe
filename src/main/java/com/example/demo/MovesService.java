@@ -15,7 +15,7 @@ public class MovesService {
     @Autowired MovesRepository movesRepository;
 
     public Move create(int cell, int turn, int round, int row, int col, int user) {
-        Move move=new Move(cell,turn,round,row,col,user);
+        Move move=new Move(cell,turn,(long)round,row,col,user);
         movesRepository.save(move);
         return move;
     }
@@ -34,9 +34,9 @@ public class MovesService {
 
     public  List<Long> listRounds() {
 //        List<Move> rounds = movesRepository.findDistinctByUser(0);
-        List<Move> rounds = movesRepository.findDistinctByTurn(1);
-        rounds.forEach(t-> System.out.println(t.getRound()));
-        return null;
+        List<Move> moves = movesRepository.findDistinctByTurn(1);
+//        moves.forEach(t-> System.out.println(t.getRound()));
+        return moves.stream().map(m -> m.getRound()).collect(Collectors.toList());
     }
 
 }
