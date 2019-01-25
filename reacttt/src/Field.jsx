@@ -104,7 +104,7 @@ class Field extends React.Component {
         return (
             <div className="field" style={{maxWidth: this.props.maxWidth}} id="gameField" onDoubleClick={this.dblClick}>
                 {this.state.table.map(item => <Cell key={item} item={item} />)}
-                <button onClick={this.dblClick} >[ROUND {round}]</button>
+                <button onClick={this.dblClick} >[{round}] RESTART</button>
             </div>
         )
     }
