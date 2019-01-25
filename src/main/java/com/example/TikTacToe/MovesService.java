@@ -1,10 +1,9 @@
-package com.example.demo;
+package com.example.TikTacToe;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,14 +28,18 @@ public class MovesService {
     }
 
     public  List<Move> getRound(int round) {
-        return movesRepository.findAllByRound(round);
+        return movesRepository.findAllByRound((long)round);
     }
 
-    public  List<Long> listRounds() {
+    public  List<Move> getUserRound(int user,int round) {
+        return movesRepository.findAllByRoundAndUser((long)round,user);
+    }
+
+    public Set<Long> listRounds() {
 //        List<Move> rounds = movesRepository.findDistinctByUser(0);
         List<Move> moves = movesRepository.findDistinctByTurn(1);
 //        moves.forEach(t-> System.out.println(t.getRound()));
-        return moves.stream().map(m -> m.getRound()).collect(Collectors.toList());
+        return moves.stream().map(m -> m.getRound()).collect(Collectors.toSet());
     }
 
 }

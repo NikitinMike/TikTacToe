@@ -7,10 +7,11 @@ const GAME=[];
 const isNull = (val) => val===0;
 // const round = (size) => Math.floor(Math.random()*size);
 var round = SIZE;
+// var success = false;
 
 class Cell extends React.Component {
 
-    state = { cellDisabled:false } 
+    state = { cellDisabled:false} 
 
     request = async (id,user) => {
         const col=id%dimension
@@ -22,7 +23,7 @@ class Cell extends React.Component {
         console.log(data)    
     }
 
-    moveClick = (e) => {
+    moveClick = async (e) => {
         // console.log(e.target.innerText)
         // if (e.target.innerText) return;
         // const item=e.target.innerText
@@ -36,7 +37,20 @@ class Cell extends React.Component {
         this.move(e,0)
         GAME[e.target.id]=+1;
         const id=e.target.id
+
         this.request(id,1);
+
+        setTimeout(async function() {
+            // DelayNode()
+            let response = await fetch(`http://localhost:8080/check/${round}`)
+            let result = await response.json();
+            if(result.success===1) {
+                console.log("WIN!")
+                this.props.onSuccess();
+            }
+            this.setState({success: true})
+        }.bind(this), 3000);
+
         // console.log(GAME.some(isNull));
         // console.log(e.target.parentNode.style)
         if(!GAME.some(isNull)) {
@@ -44,6 +58,7 @@ class Cell extends React.Component {
             console.log("GAME OVER",GAME)
             e.target.parentNode.style.background="RED"
         }
+
     }
 
     move(e,n) {
@@ -71,12 +86,17 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {table:[],round:0}
+    state = {table:[],round:0, success: false}
 
     componentDidMount(){
         // e.preventDefault();
         this.reset(true);
         // console.log(this.state.table);
+    }
+
+    changeToSuccess = () =>{
+        console.log("YOU WIN!")
+        this.setState({success: !this.state.success})
     }
 
     reset(){
@@ -103,8 +123,9 @@ class Field extends React.Component {
         // console.log(endGame)
         return (
             <div className="field" style={{maxWidth: this.props.maxWidth}} id="gameField" onDoubleClick={this.dblClick}>
-                {this.state.table.map(item => <Cell key={item} item={item} />)}
+                {this.state.table.map(item => <Cell onSuccess={this.changeToSuccess} key={item} item={item} />)}
                 <button onClick={this.dblClick} >[{round}] RESTART</button>
+                <div className="win" hidden={!this.state.success}>YOU WIN!</div>
             </div>
         )
     }
