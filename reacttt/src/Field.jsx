@@ -39,10 +39,12 @@ class Cell extends React.Component {
         this.request(id,1);
         // console.log(GAME.some(isNull));
         // console.log(e.target.parentNode.style)
-        if(!GAME.some(isNull)) 
+        if(!GAME.some(isNull)) {
+            this.request(0,0);
+            console.log("GAME OVER",GAME)
             e.target.parentNode.style.background="RED"
-            // console.log("GAME OVER"+GAME)
         }
+    }
 
     move(e,n) {
         if(n>SIZE) return;

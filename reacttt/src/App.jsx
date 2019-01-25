@@ -18,6 +18,7 @@ class App extends React.Component {
 
   menuBarClick = (item) => {
     console.log(item)
+    window.location = "/";
   }
 
   render () {

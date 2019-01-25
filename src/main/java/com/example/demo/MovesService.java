@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,12 @@ public class MovesService {
         return move;
     }
 
-    public  List<Move> getAll() {
-        return movesRepository.findAll();
+    private Sort sort() {
+        return new Sort(Sort.Direction.DESC, "id");
     }
+
+    public  List<Move> getAll() {
+        return movesRepository.findAll(sort());
+    }
+
 }

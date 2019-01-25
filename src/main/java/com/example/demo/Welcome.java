@@ -45,7 +45,8 @@ public class Welcome {
         @PathVariable int row,
         @PathVariable int col
     ) {
-        turn = (this.round == round) ? turn + 1 : 0;
+        turn = (this.round == round) ? turn + 1 : 1;
+        if(user==0) turn=0;
         this.round = round;
 
         int cell = row*dimension+col;
