@@ -71,7 +71,7 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {table:[]}
+    state = {table:[],round:0}
 
     componentDidMount(){
         // e.preventDefault();
@@ -81,7 +81,9 @@ class Field extends React.Component {
 
     reset(){
         SIZE = dimension*dimension;
+        // let {round} = this.state
         round = Math.floor(Math.random()*999)+dimension*1000;
+        // this.setState({round});
         const {table} = this.state
         for(var i=0;i<SIZE;i++) {table[i]=i;GAME[i]=0;}
         this.setState(table);
@@ -102,7 +104,7 @@ class Field extends React.Component {
         return (
             <div className="field" style={{maxWidth: this.props.maxWidth}} id="gameField" onDoubleClick={this.dblClick}>
                 {this.state.table.map(item => <Cell key={item} item={item} />)}
-                <button onClick={this.dblClick} >REPLAY</button>
+                <button onClick={this.dblClick} >[ROUND {round}]</button>
             </div>
         )
     }
