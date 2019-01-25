@@ -16,10 +16,26 @@ export const dimension=3;
 
 class App extends React.Component {
 
+  state = { rounds:[] } 
+
   menuBarClick = (item) => {
     console.log(item)
     window.location = "/";
   }
+
+  request = async () => {
+    // read our JSON
+    let response = await fetch(`http://localhost:8080/results`)
+    let rounds = await response.json();
+    console.log(rounds)    
+    this.setState({rounds});
+  }  
+
+  componentDidMount(){
+    // e.preventDefault();
+    this.request(true);
+    // console.log(this.state.table);
+  }  
 
   render () {
     return (
@@ -27,6 +43,8 @@ class App extends React.Component {
         <MyMenu menu={["3","4","5","6","7","8","9"]} click={this.menuBarClick}/>
       { <Welcome name="Kitty"/> }
       <Field maxWidth={50*dimension} dimension={dimension}/>
+      {/* <h3>{this.state.rounds}</h3> */}
+      <MyMenu menu={this.state.rounds} click={this.menuBarClick}/>
       </div>
     )
   }
