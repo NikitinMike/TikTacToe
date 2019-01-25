@@ -19,9 +19,9 @@ public class CheckBoard {
     @ResponseBody
     @RequestMapping(value = "/check/{round}", method = RequestMethod.GET, produces = "application/json")
     public String check(@PathVariable int round){
+        int dim=round/1000;
         int user=1;
         List<Move> turns=moves.getUserRound(user,round);
-        int dim=3;
 //        turns.forEach(t-> System.out.println(t));
         int[][]board = new int[dim][dim];
         for (Move move:turns) {
@@ -59,8 +59,8 @@ public class CheckBoard {
 
         win=true;
         for (int j=0;j<dim;j++) // check diag2
-            if (board[j][dim-1-j] != user) win=false;
-        if(win) return "{\"success\":1"; // "YOU WIN by DIAG!"
+            if (board[j][dim-j-1] != user) win=false;
+        if(win) return "{\"success\":1}"; // "YOU WIN by DIAG!"
 
         return "{\"success\":0}"; // "YOU LOOSE"
 
