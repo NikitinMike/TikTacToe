@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.TikTacToe;
 
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,34 +6,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import java.util.List;
-
-import static java.lang.Math.random;
+import java.util.Set;
 
 //@Rest
 @Controller
 @CrossOrigin // (origins = "http://localhost:3000")
-public class Welcome {
+public class MainControllers {
 
     @Autowired MovesService moves;
     int turn=0;
     int round=0;
 //    int dimension = 3;
 
-    @RequestMapping("/welcome")
+//    @ResponseBody
+    @RequestMapping({"/welcome","/"})
     public String welcome(){
-        return "WELCOME!";
+//        return "WELCOME!";
+        return "welcome";
     }
 
-//    @ResponseBody
-    @RequestMapping("/")
+    @RequestMapping("/moves")
     public String /*List<Move>*/ getAll(Model model){
         model.addAttribute("moves", moves.getAll());
-        return "welcome";
+        return "moves";
     }
 
     @ResponseBody
@@ -66,7 +62,7 @@ public class Welcome {
 
     @ResponseBody
     @RequestMapping("/results")
-    public List<Long> result(){
+    public Set<Long> result(){
 //        List<Long> rounds=moves.listRounds();
 //        rounds.forEach(t-> System.out.println(t));
         return moves.listRounds();

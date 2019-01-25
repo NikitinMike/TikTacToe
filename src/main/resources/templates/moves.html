@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>GAME MOVES</title>
+</head>
+<body>
+<h1>GAME MOVES</h1>
+<!--<h2>moves</h2>-->
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>round</th>
+        <th>turn</th>
+        <th>user</th>
+        <th>cell</th>
+        <th>row</th>
+        <th>col</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="move : ${moves}">
+        <td th:text="${move.id}"/>
+        <td th:text="${move.round}"/>
+        <td th:text="${move.turn}"/>
+        <td th:text="${move.user}"/>
+        <td th:text="${move.cell}"/>
+        <td th:text="${move.row}"/>
+        <td th:text="${move.col}"/>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

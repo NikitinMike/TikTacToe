@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.TikTacToe;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -39,6 +39,8 @@ public class Move implements Serializable {
 
     public int getCell(){return cell;}
     public Long getRound(){return round;}
+    public int getRow(){return row;}
+    public int getCol(){return col;}
 
     @Override
     public String toString() {

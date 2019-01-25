@@ -6,6 +6,7 @@ import React from 'react'
 // import {gs} from 'react-global-state';
 
 import MyMenu from './Menu'
+import MyMenu1 from './Menu.1'
 import Field from './Field';
 // import Welcome from './Welcome';
 // import BigTitle from './BigTitle';
@@ -23,13 +24,15 @@ class App extends React.Component {
     window.location = "/";
   }
 
+  state = {rounds:[]}
+
   request = async () => {
     // read our JSON
     let response = await fetch(`http://localhost:8080/results`)
     let rounds = await response.json();
-    console.log(rounds)    
+    console.log(rounds)
     this.setState({rounds});
-  }  
+  }
 
   componentDidMount(){
     // e.preventDefault();
@@ -43,8 +46,7 @@ class App extends React.Component {
         <MyMenu menu={["3","4","5","6","7","8","9"]} click={this.menuBarClick}/>
       { <Welcome name="Kitty"/> }
       <Field maxWidth={50*dimension} dimension={dimension}/>
-      {/* <h3>{this.state.rounds}</h3> */}
-      <MyMenu menu={this.state.rounds} click={this.menuBarClick}/>
+      <MyMenu1 menu={this.state.rounds} click={this.menuBarClick}/>
       </div>
     )
   }
