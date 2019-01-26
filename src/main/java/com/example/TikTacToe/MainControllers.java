@@ -17,7 +17,7 @@ public class MainControllers {
     @Autowired MovesService moves;
     int turn=0;
     int round=0;
-    int dimension = 3;
+    int dimension = 4;
 
     @RequestMapping({"/welcome","/"})
     public String welcome(){
