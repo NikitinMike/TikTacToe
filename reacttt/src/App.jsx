@@ -20,8 +20,13 @@ class App extends React.Component {
   state = { rounds:[] } 
 
   menuBarClick = (item) => {
-    console.log(item)
-    window.location = "/";
+    // console.log(item)
+    window.location = "/"+item;
+  }
+
+  menuBarClick1 = (item) => {
+    // console.log(item)
+    window.location = "/round/"+item;
   }
 
   state = {rounds:[]}
@@ -46,7 +51,7 @@ class App extends React.Component {
         <MyMenu menu={["3","4","5","6","7","8","9"]} click={this.menuBarClick}/>
       { <Welcome name="Kitty"/> }
       <Field maxWidth={50*dimension} dimension={dimension}/>
-      <MyMenu1 menu={this.state.rounds} click={this.menuBarClick}/>
+      <MyMenu1 menu={this.state.rounds} click={this.menuBarClick1}/>
       </div>
     )
   }
