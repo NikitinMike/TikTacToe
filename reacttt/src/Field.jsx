@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {dimension} from './App'
-var SIZE=dimension*dimension;
+// import {dimension} from './App'
+var SIZE; // =dimension*dimension;
 const GAME=[];
 
 const isNull = (val) => val===0;
 // const round = (size) => Math.floor(Math.random()*size);
-var round = SIZE;
+var round; // = SIZE;
 // var success = false;
 
 class Cell extends React.Component {
@@ -105,11 +105,11 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {table:[],round:0, success: false}
+    state = {table:[],round:0, success: false, SIZE:0}
 
     componentDidMount(){
         // e.preventDefault();
-        this.reset(true);
+        this.reset(this.props.dimension);
         // console.log(this.state.table);
     }
 
@@ -118,10 +118,11 @@ class Field extends React.Component {
         this.setState({success: !this.state.success})
     }
 
-    reset(){
-        SIZE = dimension*dimension;
+    reset(dim){
+        SIZE = dim*dim;
+        this.setState({SIZE:SIZE})
         // let {round} = this.state
-        round = Math.floor(Math.random()*999)+dimension*1000;
+        round = Math.floor(Math.random()*999)+dim*1000;
         // this.setState({round});
         const {table} = this.state
         for(var i=0;i<SIZE;i++) {table[i]=i;GAME[i]=0;}
