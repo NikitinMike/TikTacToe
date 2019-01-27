@@ -48,10 +48,9 @@ public class CheckBoard {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/check/{round}", method = RequestMethod.GET, produces = "application/json")
-    public String check(@PathVariable int round) {
+    @RequestMapping(value = "/check/{round}/{user}", method = RequestMethod.GET, produces = "application/json")
+    public String check(@PathVariable int round,@PathVariable int user) {
 
-        int user=1;
         dim=round/1000;
 
         List<Move> turns=moves.getUserRound(user,round);
@@ -62,9 +61,9 @@ public class CheckBoard {
             board[move.getRow()][move.getCol()]=user;
         showBoard();
 
-        if(checkRowCol(user)) return "{\"success\":1}"; // "YOU WIN by ROW!"
-        if(checkDiags(user)) return "{\"success\":1}"; // "YOU WIN by DIAG!"
-        return "{\"success\":0}"; // "YOU LOOSE"
+        if(checkRowCol(user)) return "{\"success\":true}"; // "WIN by ROW!"
+        if(checkDiags(user)) return "{\"success\":true}"; // "WIN by DIAG!"
+        return "{\"success\":false}"; // "LOOSE"
     }
 
 }

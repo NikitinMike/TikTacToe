@@ -23,7 +23,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-
+*.js.map
 
 # dependencies
 /node_modules

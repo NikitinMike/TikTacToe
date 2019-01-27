@@ -83,15 +83,15 @@ public class MainControllers {
     }
 
     @ResponseBody
-    @RequestMapping("/mymove/{round}")
-    public JSONObject  move(@PathVariable int round)
+    @RequestMapping("/computer/{round}")
+    public JSONObject move(@PathVariable int round)
     {
         int dim=round/1000;
         int size=dim*dim;
         int cell = (int) (random()*size);
         JSONObject json = new JSONObject();
         json.put("cell", cell);
-        System.out.println("MYMOVE:"+json);
+        System.out.println("COMPUTER:"+json);
         return json;
     }
 
