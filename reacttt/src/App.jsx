@@ -13,34 +13,32 @@ import Field from './Field';
 
 function Welcome(props) { return <h1 hidden>Hello, {props.name}!</h1>;}
 
-const dimension=3;
-
 class App extends React.Component {
 
-  state = { rounds:[] } 
-
-  menuBarClick = (item) => {
+  state = { rounds:[],dimension:3 } 
+  
+  menuReSize = (item) => {
     // console.log(item)
-    window.location = "/"+item;
+    this.setState({dimension:item});
+    // window.location = "#"+item;
   }
 
-  menuBarClick1 = (item) => {
+  menuRounds = (item) => {
     // console.log(item)
     window.location = "/round/"+item;
   }
-
-  state = {rounds:[]}
 
   request = async () => {
     // read our JSON
     let response = await fetch(`http://localhost:8080/results`)
     let rounds = await response.json();
-    console.log(rounds)
+    // console.log(rounds)
     this.setState({rounds});
   }
 
   componentDidMount(){
     // e.preventDefault();
+    // this.setState({dimension:3});    
     this.request(true);
     // console.log(this.state.table);
   }  
@@ -48,10 +46,10 @@ class App extends React.Component {
   render () {
     return (
       <div className='App'>
-        <MyMenu menu={["3","4","5","6","7","8","9"]} click={this.menuBarClick}/>
+        <MyMenu menu={["3","4","5","6","7","8","9"]} click={this.menuReSize}/>
       { <Welcome name="Kitty"/> }
-      <Field maxWidth={50*dimension} dimension={dimension}/>
-      <MyMenu1 menu={this.state.rounds} click={this.menuBarClick1}/>
+      <Field maxWidth={50*this.state.dimension} dimension={this.state.dimension}/>
+      <MyMenu1 menu={this.state.rounds} click={this.menuRounds}/>
       </div>
     )
   }

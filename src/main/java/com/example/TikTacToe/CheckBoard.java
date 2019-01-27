@@ -21,7 +21,7 @@ public class CheckBoard {
         System.out.println();
         for (int i=0;i<dim;i++) {
             for (int j = 0; j<dim; j++)
-                System.out.print(board[i][j]);
+                System.out.printf("%2d",board[i][j]);
             System.out.println();
         }
     }
