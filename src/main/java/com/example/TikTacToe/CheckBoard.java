@@ -14,7 +14,7 @@ public class CheckBoard {
     @Autowired
     MovesService moves;
 
-    int dim=4;
+    int dim;
     int[][]board;
 
     void showBoard(){
