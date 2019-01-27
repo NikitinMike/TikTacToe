@@ -42,7 +42,8 @@ public class MainControllers {
 
     @ResponseBody
     @RequestMapping("/move/{dimension}/{round}/{user}/{row}/{col}")
-    public Move move(
+//    public Move move(
+    public String move(
         @PathVariable int dimension,
         @PathVariable int round,
         @PathVariable int user,
@@ -54,11 +55,13 @@ public class MainControllers {
         if(user==0) turn=0;
 
         int cell = row*dimension+col;
-        if(!moves.isCellFree(cell,turn,round,row,col,user)) return null;
+        if(!moves.isCellFree(cell,turn,round,row,col,user))
+            return "{\"success\":false}";
         Move m=moves.create(cell,turn,round,row,col,user);
 
         System.out.println(m);
-        return m;
+        return "{\"success\":true}";
+//        return m;
     }
 
     @RequestMapping("/result/{round}")

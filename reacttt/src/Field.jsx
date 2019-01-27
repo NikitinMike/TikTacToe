@@ -17,28 +17,34 @@ class Cell extends React.Component {
         const col=id%dimension
         const row=(id-col)/dimension
         console.log(id,":",row,",",col)
-        // read our JSON
-        let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${user}/${row}/${col}`)
-        let data = await response.json();
-        console.log(data)    
+
+        // var result;
+        // setTimeout(async function() {
+            // DelayNode()
+            let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${user}/${row}/${col}`)
+            let result = await response.json();
+        // }.bind(this), 3000);
+
+        console.log(user,id,result);
+        return result.success;
     }
 
-    moveClick = async (e) => {
+    clickMove = (e) => {
         // console.log(e.target.innerText)
         // if (e.target.innerText) return;
         // const item=e.target.innerText
+
+        const id=e.target.id
+        if (!this.request(id,1)) return;
+
+        GAME[e.target.id]=+1;
+        this.move(e,0)
+        e.target.innerText="X"
         var {cellDisabled} = this.state
         // cellDisabled=!cellDisabled;
         cellDisabled=true;
         console.log("X>",e.target.id)
         this.setState({cellDisabled});
-        // this.render()
-        e.target.innerText="X"
-        this.move(e,0)
-        GAME[e.target.id]=+1;
-        const id=e.target.id
-
-        this.request(id,1);
 
         setTimeout(async function() {
             // DelayNode()
@@ -68,6 +74,7 @@ class Cell extends React.Component {
         // console.log(cell,e.target.parentNode.childNodes[cell])
         if (item.innerText) return this.move(e,n+1)
         item.innerText="O"
+        item.disabled=true
         console.log("O<",item.id)
         GAME[item.id]=-1;
         this.request(item.id,-1);
@@ -75,7 +82,7 @@ class Cell extends React.Component {
 
     render () {
         return (
-            <button className="flex-itm" onClick={this.moveClick} disabled={this.state.cellDisabled} id={this.props.item}>
+            <button className="flex-itm" onClick={this.clickMove} disabled={this.state.cellDisabled} id={this.props.item}>
                 {/* &nbsp; */}
                 {/* {this.props.item} */}
             </button>
