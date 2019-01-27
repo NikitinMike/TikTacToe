@@ -13,10 +13,11 @@ class Cell extends React.Component {
 
     state = { cellDisabled:false} 
 
-    request = async (id,user) => {
-        const col=id%dimension
-        const row=(id-col)/dimension
-        console.log(id,":",row,",",col)
+    request = async (round,cell,user) => {
+        const dimension=Math.trunc(round/1000)
+        const col=cell%dimension
+        const row=(cell-col)/dimension
+        console.log(dimension,cell,":",row,",",col)
 
         // var result;
         // setTimeout(async function() {
@@ -25,7 +26,7 @@ class Cell extends React.Component {
             let result = await response.json();
         // }.bind(this), 3000);
 
-        console.log(user,id,result);
+        console.log(user,cell,result);
         return result.success;
     }
 
@@ -34,8 +35,8 @@ class Cell extends React.Component {
         // if (e.target.innerText) return;
         // const item=e.target.innerText
 
-        const id=e.target.id
-        if (!this.request(id,1)) return;
+        const cell=e.target.id
+        if (!this.request(round,cell,1)) return;
 
         GAME[e.target.id]=+1;
         this.move(e,0)
@@ -55,12 +56,12 @@ class Cell extends React.Component {
                 this.props.onSuccess();
             }
             this.setState({success: true})
-        }.bind(this), 3000);
+        }.bind(this), 1000);
 
         // console.log(GAME.some(isNull));
         // console.log(e.target.parentNode.style)
         if(!GAME.some(isNull)) {
-            this.request(0,0);
+            this.request(round,0,0);
             console.log("GAME OVER",GAME)
             e.target.parentNode.style.background="RED"
         }
@@ -69,15 +70,26 @@ class Cell extends React.Component {
 
     move(e,n) {
         if(n>SIZE) return;
-        const cell=Math.floor(Math.random()*SIZE);
+
+        var cell=Math.floor(Math.random()*SIZE);
+/*
+        setTimeout(async function() {
+            let response = await fetch(`http://localhost:8080/mymove/${round}`)
+            let result = await response.json();
+            console.log(result.cell)
+            cell = result.cell;
+        }, 1000);
+  */      
+        if (GAME[cell]!==0) return this.move(e,n+1)
+        // if (item.innerText) return this.move(e,n+1)
+
+        this.request(round,cell,-1);
+        GAME[cell]=-1;
         const item=e.target.parentNode.childNodes[cell]
         // console.log(cell,e.target.parentNode.childNodes[cell])
-        if (item.innerText) return this.move(e,n+1)
         item.innerText="O"
         item.disabled=true
         console.log("O<",item.id)
-        GAME[item.id]=-1;
-        this.request(item.id,-1);
     }
 
     render () {

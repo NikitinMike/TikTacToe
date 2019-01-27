@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Math.random;
+
 //@Rest
 @Controller
 @CrossOrigin // (origins = "http://localhost:3000")
@@ -78,6 +80,19 @@ public class MainControllers {
 //        List<Long> rounds=moves.listRounds();
 //        rounds.forEach(t-> System.out.println(t));
         return moves.listRounds();
+    }
+
+    @ResponseBody
+    @RequestMapping("/mymove/{round}")
+    public JSONObject  move(@PathVariable int round)
+    {
+        int dim=round/1000;
+        int size=dim*dim;
+        int cell = (int) (random()*size);
+        JSONObject json = new JSONObject();
+        json.put("cell", cell);
+        System.out.println("MYMOVE:"+json);
+        return json;
     }
 
 }
