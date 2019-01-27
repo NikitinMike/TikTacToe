@@ -11,4 +11,5 @@ public interface MovesRepository extends JpaRepository<Move, Long> {
     List<Move> findAllByUser(int user);
     List<Move> findDistinctByUser(int user);
     List<Move> findDistinctByTurn(int turn);
+    Move findByRoundAndCell(long round,int cell);
 }

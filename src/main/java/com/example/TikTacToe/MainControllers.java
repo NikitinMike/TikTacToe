@@ -54,6 +54,7 @@ public class MainControllers {
         if(user==0) turn=0;
 
         int cell = row*dimension+col;
+        if(!moves.isCellFree(cell,turn,round,row,col,user)) return null;
         Move m=moves.create(cell,turn,round,row,col,user);
 
         System.out.println(m);

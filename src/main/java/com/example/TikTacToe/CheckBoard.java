@@ -47,7 +47,7 @@ public class CheckBoard {
         return (d1||d2);
     }
 
-        @ResponseBody
+    @ResponseBody
     @RequestMapping(value = "/check/{round}", method = RequestMethod.GET, produces = "application/json")
     public String check(@PathVariable int round) {
 

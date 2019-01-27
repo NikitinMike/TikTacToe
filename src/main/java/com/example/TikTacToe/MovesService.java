@@ -42,4 +42,10 @@ public class MovesService {
         return moves.stream().map(m -> m.getRound()).collect(Collectors.toSet());
     }
 
+    public boolean isCellFree(int cell, int turn, int round, int row, int col, int user) {
+        Move move = movesRepository.findByRoundAndCell(round,cell);
+        if (move==null) return true;
+//        if (move.getUser()==user)
+        return false;
+    }
 }
