@@ -43,7 +43,7 @@ class App extends React.Component {
     this.getRounds(true);
     this.menuReSize(3)
     // console.log(this.state);
-    console.log("STATE:",this.state)
+    // console.log("STATE:",this.state)
   }  
 
   render () {
