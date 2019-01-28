@@ -89,10 +89,12 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {SIZE:0, gameover:false, message:"GAME OVER!", dimension:3}
+    state = {SIZE:0, gameover:false, message:"GAME OVER!", dimension:3, round:0}
 
     componentDidMount(){
         // e.preventDefault();
+        console.log(this.props)
+        this.setState({round:this.props.round})
         this.reset(this.props.dimension);
     }
 
@@ -108,7 +110,6 @@ class Field extends React.Component {
         this.setState({dimension:dim})
         SIZE = dim*dim;
         this.setState({SIZE:SIZE})
-        round = Math.floor(Math.random()*999)+dim*1000;
         GAME=[]
         for (var i=0;i<SIZE;i++) GAME[i]=0;
     }
@@ -130,10 +131,9 @@ class Field extends React.Component {
     }
 
     createTable = (dim) => {
-        console.log(dim)
-        let table = []
         const size=dim*dim
-        this.setState({SIZE:size})
+        // console.log(dim,size)
+        let table = []
         for (let item = 0; item < size; item++) 
             table.push(<Cell onSuccess={this.changeToSuccess} key={item} item={item} />)
         return table
@@ -143,7 +143,7 @@ class Field extends React.Component {
         return (
             <div className="field" style={{maxWidth: 50*this.props.dimension}} id="gameField" onDoubleClick={this.dblClick}>
                 {this.createTable(this.props.dimension)}
-                <button onClick={this.dblClick} >[{round}] RESTART</button>
+                <button onClick={this.dblClick} >[{this.state.round}] RESTART</button>
                 <div className="win" id="win" hidden={!this.state.gameover}>{this.state.message}</div>
             </div>
         )

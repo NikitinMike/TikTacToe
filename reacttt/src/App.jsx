@@ -15,7 +15,7 @@ function Welcome(props) { return <h1 hidden>Hello, {props.name}!</h1>;}
 
 class App extends React.Component {
 
-  state = { rounds:[],dimension:3 } 
+  state = { rounds:[],dimension:3,round:0 } 
   
   menuReSize = (item) => {
     // console.log(item)
@@ -37,10 +37,11 @@ class App extends React.Component {
   }
 
   componentDidMount(){
+    this.setState({round:Math.floor(Math.random()*999)+this.state.dimension*1000})
     // e.preventDefault();
     // this.setState({dimension:3});    
     this.getRounds(true);
-    // console.log(this.state.table);
+    // console.log(this.state);
   }  
 
   render () {
@@ -48,7 +49,7 @@ class App extends React.Component {
       <div className='App'>
         <MyMenu menu={["3","4","5","6","7","8","9"]} click={this.menuReSize}/>
       { <Welcome name="Kitty"/> }
-      <Field dimension={this.state.dimension}/>
+      <Field dimension={this.state.dimension} round={this.state.round}/>
       <MyMenu1 menu={this.state.rounds} click={this.menuRounds}/>
       </div>
     )
