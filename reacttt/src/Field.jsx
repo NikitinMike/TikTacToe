@@ -80,7 +80,7 @@ class Cell extends React.Component {
             <button className="flex-itm" id={this.props.item}
                 onClick={this.clickMove} disabled={this.state.cellDisabled}>
                 {/* &nbsp; */}
-                {/* {this.props.item} */}
+                {this.props.item}
             </button>
         )
     }
@@ -89,12 +89,11 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {table:[],SIZE:0, gameover:false, message:"GAME OVER!",dimension:3}
+    state = {SIZE:0, gameover:false, message:"GAME OVER!", dimension:3}
 
     componentDidMount(){
         // e.preventDefault();
         this.reset(this.props.dimension);
-        // console.log(this.state.table);
     }
 
     changeToSuccess = (winner) =>{
@@ -110,16 +109,15 @@ class Field extends React.Component {
         SIZE = dim*dim;
         this.setState({SIZE:SIZE})
         round = Math.floor(Math.random()*999)+dim*1000;
-        const {table} = this.state
-        for(var i=0;i<SIZE;i++) {table[i]=i;GAME[i]=0;}
-        this.setState(table);
+        GAME=[]
+        for (var i=0;i<SIZE;i++) GAME[i]=0;
     }
 
     dblClick = (e) => {
         window.location = "/"+this.state.dimension;
         // this.reset(this.state.dimension)
     }
-/*
+
     shouldComponentUpdate(nextProps, nextState){
         console.log("shouldComponentUpdate")
         console.log(nextProps, nextState)
@@ -130,11 +128,21 @@ class Field extends React.Component {
         console.log("componentWillUpdate")
         this.reset(nextProps.dimension)
     }
-*/
+
+    createTable = (dim) => {
+        console.log(dim)
+        let table = []
+        const size=dim*dim
+        this.setState({SIZE:size})
+        for (let item = 0; item < size; item++) 
+            table.push(<Cell onSuccess={this.changeToSuccess} key={item} item={item} />)
+        return table
+      }
+
     render () {
         return (
             <div className="field" style={{maxWidth: 50*this.props.dimension}} id="gameField" onDoubleClick={this.dblClick}>
-                {this.state.table.map(item => <Cell onSuccess={this.changeToSuccess} key={item} item={item} />)}
+                {this.createTable(this.props.dimension)}
                 <button onClick={this.dblClick} >[{round}] RESTART</button>
                 <div className="win" id="win" hidden={!this.state.gameover}>{this.state.message}</div>
             </div>
