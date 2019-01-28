@@ -105,7 +105,7 @@ class Field extends React.Component {
     }
 
     reset(dim){
-        console.log(this.props.dimension)
+        console.log("Reset:",dim,this.props.dimension)
         this.setState({dimension:dim})
         SIZE = dim*dim;
         this.setState({SIZE:SIZE})
@@ -116,18 +116,21 @@ class Field extends React.Component {
     }
 
     dblClick = (e) => {
-        // window.location = "/";
-        this.reset(this.state.dimension)
+        window.location = "/"+this.state.dimension;
+        // this.reset(this.state.dimension)
     }
-
+/*
     shouldComponentUpdate(nextProps, nextState){
+        console.log("shouldComponentUpdate")
+        console.log(nextProps, nextState)
         return nextProps.dimension!==this.props.dimension;
     }
 
     componentWillUpdate(nextProps, nextState){
+        console.log("componentWillUpdate")
         this.reset(nextProps.dimension)
     }
-
+*/
     render () {
         return (
             <div className="field" style={{maxWidth: 50*this.props.dimension}} id="gameField" onDoubleClick={this.dblClick}>
