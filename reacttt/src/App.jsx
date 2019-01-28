@@ -15,7 +15,7 @@ function Welcome(props) { return <h1 hidden>Hello, {props.name}!</h1>;}
 
 class App extends React.Component {
 
-  state = { rounds:[],dimension:3,round:0 } 
+  state = { rounds:[],dimension:3,round:0} 
   
   menuReSize = (item) => {
     // console.log(item)
@@ -37,11 +37,13 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    this.setState({round:Math.floor(Math.random()*999)+this.state.dimension*1000})
+    const round = Math.floor(Math.random()*999)+this.state.dimension*1000
+    this.setState({round:round})
     // e.preventDefault();
     // this.setState({dimension:3});    
     this.getRounds(true);
     // console.log(this.state);
+    console.log("STATE:",this.state)
   }  
 
   render () {
