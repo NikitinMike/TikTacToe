@@ -126,7 +126,7 @@ class Field extends React.Component {
     render () {
         // console.log(this.props.dimension)
         return (
-            <div className="field" style={{maxWidth: this.props.maxWidth}} id="gameField" onDoubleClick={this.dblClick}>
+            <div className="field" style={{maxWidth: 50*this.props.dimension}} id="gameField" onDoubleClick={this.dblClick}>
                 {this.state.table.map(item => <Cell onSuccess={this.changeToSuccess} key={item} item={item} />)}
                 <button onClick={this.dblClick} >[{round}] RESTART</button>
                 <div className="win" id="win" hidden={!this.state.gameover}>{this.state.message}</div>

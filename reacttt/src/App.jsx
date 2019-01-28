@@ -48,7 +48,7 @@ class App extends React.Component {
       <div className='App'>
         <MyMenu menu={["3","4","5","6","7","8","9"]} click={this.menuReSize}/>
       { <Welcome name="Kitty"/> }
-      <Field maxWidth={50*this.state.dimension} dimension={this.state.dimension}/>
+      <Field dimension={this.state.dimension}/>
       <MyMenu1 menu={this.state.rounds} click={this.menuRounds}/>
       </div>
     )
