@@ -3,7 +3,7 @@ import React from 'react'
 const isNull = (val) => val===0;
 var round;
 var SIZE;
-const GAME=[];
+var GAME=[];
 const PLAYER=+1
 const COMPUTER=-1
 
@@ -89,7 +89,7 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {table:[],SIZE:0, gameover:false, message:"GAME OVER!"}
+    state = {table:[],SIZE:0, gameover:false, message:"GAME OVER!",dimension:3}
 
     componentDidMount(){
         // e.preventDefault();
@@ -104,13 +104,9 @@ class Field extends React.Component {
         this.setState({gameover:true})
     }
 
-    // constructor(props) {
-    //     super(props);
-    //     // this.reset(this.props.dimension)
-    // }
-
     reset(dim){
         console.log(this.props.dimension)
+        this.setState({dimension:dim})
         SIZE = dim*dim;
         this.setState({SIZE:SIZE})
         round = Math.floor(Math.random()*999)+dim*1000;
@@ -120,11 +116,19 @@ class Field extends React.Component {
     }
 
     dblClick = (e) => {
-        window.location = "/";
+        // window.location = "/";
+        this.reset(this.state.dimension)
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        return nextProps.dimension!==this.props.dimension;
+    }
+
+    componentWillUpdate(nextProps, nextState){
+        this.reset(nextProps.dimension)
     }
 
     render () {
-        // console.log(this.props.dimension)
         return (
             <div className="field" style={{maxWidth: 50*this.props.dimension}} id="gameField" onDoubleClick={this.dblClick}>
                 {this.state.table.map(item => <Cell onSuccess={this.changeToSuccess} key={item} item={item} />)}

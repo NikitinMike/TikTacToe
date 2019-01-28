@@ -28,7 +28,7 @@ class App extends React.Component {
     window.location = "/round/"+item;
   }
 
-  request = async () => {
+  getRounds = async () => {
     // read our JSON
     let response = await fetch(`http://localhost:8080/results`)
     let rounds = await response.json();
@@ -39,7 +39,7 @@ class App extends React.Component {
   componentDidMount(){
     // e.preventDefault();
     // this.setState({dimension:3});    
-    this.request(true);
+    this.getRounds(true);
     // console.log(this.state.table);
   }  
 
