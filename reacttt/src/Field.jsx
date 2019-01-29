@@ -1,124 +1,108 @@
 import React from 'react'
 
-var GAME=[];
 const PLAYER=+1
 const COMPUTER=-1
-const isNull = (val) => val===0;
+var GAME=[]
 
 class Cell extends React.Component {
-
-    state = { cellDisabled:false} 
-
     render () {
         return (
-            <button className="flex-itm" id={this.props.item}
-                onClick={this.props.clickMove} disabled={this.state.cellDisabled}>
+            <button className="flex-itm" id={this.props.item} onClick={this.props.clickMove}>
                 {/* &nbsp; */}
-                {/* {this.props.item} */}
+                {/*this.props.item*/}
             </button>
         )
     }
-
 }
 
 class Field extends React.Component {
 
-    state = {SIZE:0, gameover:false, message:"GAME OVER!"}
+    state = {gameover:false}
+    message="GAME OVER!"
+    size = 0
 
-    clickMove = async (e) => {
-
-        const cell=e.target.id
-        if (!this.requestMove(cell,PLAYER)) return;
-
-        GAME[cell]=PLAYER;
-        e.target.innerText="X"
-        var {cellDisabled} = this.state
-        // cellDisabled=!cellDisabled;
-        cellDisabled=true;
-        console.log("X>",cell)
-        this.setState({cellDisabled});
-
-        this.checkWinner(PLAYER)
-        this.computerMove(e,0)
-        this.checkWinner(COMPUTER)
-
-        if(!GAME.some(isNull)) {
-            this.requestMove(0,0);
-            // this.props.onSuccess(0);
-            // e.target.parentNode.style.background="RED"
-        }
-
+    changeBanner = (winner) =>{
+        // console.log(this.message,winner,this.GAME)
+        if (winner===PLAYER) this.message="YOU WIN!"
+        if (winner===COMPUTER) this.message="YOU LOOSE!"
+        this.setState({gameover:true})
+        // return true
     }
 
-    computerMove = async (e,n) => {        
-        if(n>this.state.SIZE) return;
+    checkWinner = async (user) => {
+        let response = await fetch(`http://localhost:8080/check/${this.props.round}/${user}`)
+        let result = await response.json();
+        // console.log(result)
+        if(result.success) return true; // && this.changeBanner(user);
+        if(!GAME.some((val) => val===0)) {
+            this.requestMove(0,0);
+            this.changeBanner(0);
+            // e.target.parentNode.style.background="RED"
+        }
+    }
 
-        var cell=Math.floor(Math.random()*this.state.SIZE);
+    requestMove = async (user,cell) => {
+        console.log("MOVE:",user,cell)
+        const {dimension} = this.props
+        const col=cell%dimension
+        const row=(cell-col)/dimension
+        // console.log(cell,":",row,",",col)
+        let response = await fetch(`http://localhost:8080/move/${dimension}/${this.props.round}/${user}/${row}/${col}`)
+        let result = await response.json();
+        console.log(user,cell);
+        // return result.success;
+        if (this.checkWinner(user)) this.changeBanner(user);
+    }
+    
+    clickMove = (e) => {
+        const cell=e.target
+        // console.log(cell)
+        if (!this.requestMove(GAME[cell.id]=PLAYER,+cell.id)) return;
+        cell.innerText="X"
+        cell.disabled=true
+        // console.log("X>",cell.id)
+
+        // this.checkWinner(PLAYER)
+        this.computerMove(e,0)
+        // this.checkWinner(COMPUTER)
+        // console.log(GAME)        
+    }
+
         // setTimeout(async function() {
             // let response = await fetch(`http://localhost:8080/computer/${round}`)
             // let result = await response.json();
             // console.log(result.cell)
             // cell = result.cell;
         // }, 1000);
-        console.log(cell)
-        if (GAME[cell]!==0) return this.computerMove(e,n+1)
-        this.requestMove(cell,COMPUTER);
-        GAME[cell]=COMPUTER
-        const item=e.target.parentNode.childNodes[cell]
+
+    computerMove = (e,n) => {        
+        // console.log(this.size,n)
+        if(n>this.size) return;
+        const cellId=Math.floor(Math.random()*this.size);
+        // console.log("COMP:",cellId,GAME[cellId],GAME)
+        if (GAME[cellId]) return this.computerMove(e,n+1)
+        GAME[cellId]=COMPUTER
+        this.requestMove(COMPUTER,cellId);
+        const item=e.target.parentNode.childNodes[cellId]
         item.innerText="O"
         item.disabled=true
-        console.log("O<",item.id)
-    }
-
-    checkWinner = async (USER) => {
-        let response = await fetch(`http://localhost:8080/check/${this.props.round}/${USER}`)
-        let result = await response.json();
-        result.success && this.changeBanner(USER);
-        console.log(result)
-    }
-
-    requestMove = async (cell,user) => {
-        //Math.trunc(round/1000)
-        // console.log(dimension,round)
-        const dimension=this.props.dimension
-        const round=this.props.round
-        const col=cell%dimension
-        const row=(cell-col)/dimension
-        console.log(cell,":",row,",",col)
-        let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${user}/${row}/${col}`)
-        let result = await response.json();
-        // console.log(user,cell,result);
-        return result.success;
-    }
-    
-    componentDidMount(){
-        // e.preventDefault();
-        this.reset(this.props.dimension);
-        // console.log("MOUNTED:",this.props)
-    }
-
-    changeBanner = (winner) =>{
-        console.log(this.state.message,winner,GAME)
-        if (winner===PLAYER) this.setState({message:"YOU WIN!"})
-        if (winner===COMPUTER) this.setState({message:"YOU LOOSE!"})
-        this.setState({gameover:true})
-    }
-
-    reset(dim){
-        this.setState({SIZE:dim*dim})
-        GAME=[]
-        for (var i=0;i<this.state.SIZE;i++) GAME[i]=0;
+        // console.log("O<",item.id)
     }
 
     dblClick = (e) => {
-        window.location = "/"+this.state.dimension;
-        // this.reset(this.state.dimension)
+        window.location = "/"+this.props.dimension;
+    }
+
+    componentDidMount(){
+        GAME=[]; for (var i=0;i<this.size;i++) GAME[i]=0;
     }
 
     createTable = (dim) => {
-        const size=dim*dim
+        // console.log("TABLE:",this.props)
+        this.size=dim*dim
         let table = []
-        for (let item = 0; item < size; item++) table.push(<Cell key={item} item={item} clickMove={this.clickMove}/>)
+        for (let item = 0; item < this.size; item++) 
+            table.push(<Cell key={item} item={item} clickMove={this.clickMove}/>)
         return table
     }
 
