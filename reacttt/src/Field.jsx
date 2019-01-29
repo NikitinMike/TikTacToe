@@ -46,24 +46,23 @@ class Field extends React.Component {
         if(result.success) this.changeBanner(user);
     }
 
-    requestMove = (user,cell) => {
+    requestMove = async (user,cell) => {
         console.log("MOVE:",USER[user+1],cell)
-        const {dimension} = this.props
+        const {dimension,round} = this.props
         const col=cell%dimension
         const row=(cell-col)/dimension
         // console.log(cell,":",row,",",col)
-        let result,response
-        setTimeout(async function() {
-            response = await fetch(`http://localhost:8080/move/${dimension}/${this.props.round}/${user}/${row}/${col}`)
-            result = await response.json();
+        // setTimeout(async function() {
+            let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${user}/${row}/${col}`)
+            let result = await response.json();
             // let response = await fetch(`http://localhost:8080/computer/${round}`)
             // let result = await response.json();
             // console.log(result.cell)
             // cell = result.cell;
-        }, 3000);
-        console.log(user,cell,result);
-        // if (this.checkWinner(user)) this.changeBanner(user);
-        return result.success;
+            // console.log(user,cell,result.success);
+            // if (this.checkWinner(user)) this.changeBanner(user);
+            return result.success;
+        // }, 1000);
     }
     
     clickMove = (e) => {
@@ -85,7 +84,7 @@ class Field extends React.Component {
         if(n>this.size) return;
         const cellId=Math.floor(Math.random()*this.size);
         // console.log("COMP:",cellId,GAME[cellId],GAME)
-        console.log(cellId)
+        // console.log(cellId)
         if (GAME[cellId]) return this.computerMove(e,n+1)
         GAME[cellId]=COMPUTER
         this.requestMove(COMPUTER,cellId);
