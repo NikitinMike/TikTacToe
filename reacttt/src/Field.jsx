@@ -36,14 +36,13 @@ class Field extends React.Component {
         let result = await response.json();
         // console.log(result)
         // console.log("GAME:",GAME)
-        if(!GAME.some(elem => (elem===0)))
-         {
+        if(result.success) this.changeBanner(user);
+        if(!GAME.some(elem => (elem===0))){
             // console.log("BINGO")
             this.changeBanner(0);
             this.requestMove(0,0);
             // e.target.parentNode.style.background="RED"
         }
-        if(result.success) this.changeBanner(user);
     }
 
     requestMove = async (user,cell) => {
