@@ -46,17 +46,24 @@ class Field extends React.Component {
         if(result.success) this.changeBanner(user);
     }
 
-    requestMove = async (user,cell) => {
+    requestMove = (user,cell) => {
         console.log("MOVE:",USER[user+1],cell)
         const {dimension} = this.props
         const col=cell%dimension
         const row=(cell-col)/dimension
         // console.log(cell,":",row,",",col)
-        let response = await fetch(`http://localhost:8080/move/${dimension}/${this.props.round}/${user}/${row}/${col}`)
-        let result = await response.json();
-        // console.log(user,cell,result);
-        return result.success;
+        let result,response
+        setTimeout(async function() {
+            response = await fetch(`http://localhost:8080/move/${dimension}/${this.props.round}/${user}/${row}/${col}`)
+            result = await response.json();
+            // let response = await fetch(`http://localhost:8080/computer/${round}`)
+            // let result = await response.json();
+            // console.log(result.cell)
+            // cell = result.cell;
+        }, 3000);
+        console.log(user,cell,result);
         // if (this.checkWinner(user)) this.changeBanner(user);
+        return result.success;
     }
     
     clickMove = (e) => {
@@ -72,12 +79,6 @@ class Field extends React.Component {
         console.log(GAME)
     }
 
-        // setTimeout(async function() {
-            // let response = await fetch(`http://localhost:8080/computer/${round}`)
-            // let result = await response.json();
-            // console.log(result.cell)
-            // cell = result.cell;
-        // }, 1000);
 
     computerMove = (e,n) => {        
         // console.log(this.size,n)
