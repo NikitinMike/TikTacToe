@@ -3,6 +3,7 @@ import React from 'react'
 const PLAYER=+1
 const COMPUTER=-1
 var GAME=[]
+const USER=['<','0','>']
 
 class Cell extends React.Component {
     render () {
@@ -22,6 +23,7 @@ class Field extends React.Component {
     size = 0
 
     changeBanner = (winner) =>{
+        console.log("WIN:",winner)
         // console.log(this.message,winner,this.GAME)
         if (winner===PLAYER) this.message="YOU WIN!"
         if (winner===COMPUTER) this.message="YOU LOOSE!"
@@ -33,26 +35,27 @@ class Field extends React.Component {
         let response = await fetch(`http://localhost:8080/check/${this.props.round}/${user}`)
         let result = await response.json();
         // console.log(result)
-        if(result.success) return true; // && this.changeBanner(user);
-        console.log(GAME)
-        if(!GAME.some(elem => (elem === 0))) {
-            // this.requestMove(0,0);
+        // console.log("GAME:",GAME)
+        if(!GAME.some(elem => (elem===0)))
+         {
             // console.log("BINGO")
-            // this.changeBanner(0);
-        //     // e.target.parentNode.style.background="RED"
+            this.changeBanner(0);
+            this.requestMove(0,0);
+            // e.target.parentNode.style.background="RED"
         }
+        if(result.success) this.changeBanner(user);
     }
 
     requestMove = async (user,cell) => {
-        console.log("MOVE:",user,cell)
+        console.log("MOVE:",USER[user+1],cell)
         const {dimension} = this.props
         const col=cell%dimension
         const row=(cell-col)/dimension
         // console.log(cell,":",row,",",col)
         let response = await fetch(`http://localhost:8080/move/${dimension}/${this.props.round}/${user}/${row}/${col}`)
         let result = await response.json();
-        console.log(user,cell,result);
-        // return result.success;
+        // console.log(user,cell,result);
+        return result.success;
         // if (this.checkWinner(user)) this.changeBanner(user);
     }
     
@@ -63,11 +66,10 @@ class Field extends React.Component {
         cell.innerText="X"
         cell.disabled=true
         // console.log("X>",cell.id)
-
         this.checkWinner(PLAYER)
         this.computerMove(e,0)
         this.checkWinner(COMPUTER)
-        // console.log(GAME)        
+        console.log(GAME)
     }
 
         // setTimeout(async function() {
@@ -82,6 +84,7 @@ class Field extends React.Component {
         if(n>this.size) return;
         const cellId=Math.floor(Math.random()*this.size);
         // console.log("COMP:",cellId,GAME[cellId],GAME)
+        console.log(cellId)
         if (GAME[cellId]) return this.computerMove(e,n+1)
         GAME[cellId]=COMPUTER
         this.requestMove(COMPUTER,cellId);
@@ -95,15 +98,15 @@ class Field extends React.Component {
         window.location = "/"+this.props.dimension;
     }
 
-    componentDidMount() {
-        GAME=[]; for (var i=0;i<this.size;i++) GAME[i]=0;
-    }
+    // componentDidMount() {
+    // }
 
     createTable = (dim) => {
         // console.log("TABLE:",this.props)
         // this.requestMove(0,0);
         this.size=dim*dim
         let table = []
+        GAME=[]; for (var i=0;i<this.size;i++) GAME[i]=0;
         for (let item = 0; item < this.size; item++) 
             table.push(<Cell key={item} item={item} clickMove={this.clickMove}/>)
         return table
@@ -114,7 +117,7 @@ class Field extends React.Component {
             <div className="field" style={{maxWidth: 50*this.props.dimension}} id="gameField" onDoubleClick={this.dblClick}>
                 {this.createTable(this.props.dimension)}
                 <button onClick={this.dblClick} >[{this.props.round}] RESTART</button>
-                <div className="win" id="win" hidden={!this.state.gameover}>{this.state.message}</div>
+                <div className="win" id="win" hidden={!this.state.gameover}>{this.message}</div>
             </div>
         )
     }
