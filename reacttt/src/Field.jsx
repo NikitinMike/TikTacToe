@@ -34,10 +34,12 @@ class Field extends React.Component {
         let result = await response.json();
         // console.log(result)
         if(result.success) return true; // && this.changeBanner(user);
-        if(!GAME.some((val) => val===0)) {
-            this.requestMove(0,0);
-            this.changeBanner(0);
-            // e.target.parentNode.style.background="RED"
+        console.log(GAME)
+        if(!GAME.some(elem => (elem === 0))) {
+            // this.requestMove(0,0);
+            // console.log("BINGO")
+            // this.changeBanner(0);
+        //     // e.target.parentNode.style.background="RED"
         }
     }
 
@@ -49,9 +51,9 @@ class Field extends React.Component {
         // console.log(cell,":",row,",",col)
         let response = await fetch(`http://localhost:8080/move/${dimension}/${this.props.round}/${user}/${row}/${col}`)
         let result = await response.json();
-        console.log(user,cell);
+        console.log(user,cell,result);
         // return result.success;
-        if (this.checkWinner(user)) this.changeBanner(user);
+        // if (this.checkWinner(user)) this.changeBanner(user);
     }
     
     clickMove = (e) => {
@@ -62,9 +64,9 @@ class Field extends React.Component {
         cell.disabled=true
         // console.log("X>",cell.id)
 
-        // this.checkWinner(PLAYER)
+        this.checkWinner(PLAYER)
         this.computerMove(e,0)
-        // this.checkWinner(COMPUTER)
+        this.checkWinner(COMPUTER)
         // console.log(GAME)        
     }
 
@@ -93,12 +95,13 @@ class Field extends React.Component {
         window.location = "/"+this.props.dimension;
     }
 
-    componentDidMount(){
+    componentDidMount() {
         GAME=[]; for (var i=0;i<this.size;i++) GAME[i]=0;
     }
 
     createTable = (dim) => {
         // console.log("TABLE:",this.props)
+        // this.requestMove(0,0);
         this.size=dim*dim
         let table = []
         for (let item = 0; item < this.size; item++) 
