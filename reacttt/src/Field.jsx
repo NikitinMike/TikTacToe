@@ -6,9 +6,17 @@ var GAME=[]
 const USER=['<','0','>']
 
 class Cell extends React.Component {
+    state = {user:""}
+    onClickItem = (e) => {
+        this.props.clickMove(e);
+        this.setState({user: "X"})
+        this.props.computerMove(e,0)
+        console.log(GAME)
+    }
     render () {
         return (
-            <button className="flex-itm" id={this.props.item} onClick={this.props.clickMove}>
+            <button className="flex-itm" id={this.props.item} onClick={this.onClickItem}>
+                {this.state.user}    
                 {/* &nbsp; */}
                 {/*this.props.item*/}
             </button>
@@ -54,10 +62,6 @@ class Field extends React.Component {
         // setTimeout(async function() {
             let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${user}/${row}/${col}`)
             let result = await response.json();
-            // let response = await fetch(`http://localhost:8080/computer/${round}`)
-            // let result = await response.json();
-            // console.log(result.cell)
-            // cell = result.cell;
             // console.log(user,cell,result.success);
             // if (this.checkWinner(user)) this.changeBanner(user);
             return result.success;
@@ -68,29 +72,37 @@ class Field extends React.Component {
         const cell=e.target
         // console.log(cell)
         if (!this.requestMove(GAME[cell.id]=PLAYER,+cell.id)) return;
-        cell.innerText="X"
+        // cell.innerText="X"
         cell.disabled=true
         // console.log("X>",cell.id)
         this.checkWinner(PLAYER)
-        this.computerMove(e,0)
-        this.checkWinner(COMPUTER)
-        console.log(GAME)
     }
 
+    getMove = async (round) => {
+        // setTimeout(async function() {
+            let response = await fetch(`http://localhost:8080/computer/${round}`)
+            let result = await response.json();
+            // console.log(result)
+            return result.cell;
+        // }, 1000);
+    }
 
-    computerMove = (e,n) => {        
+    computerMove = async (e,n) => {        
         // console.log(this.size,n)
         if(n>this.size) return;
-        const cellId=Math.floor(Math.random()*this.size);
+        const {dimension,round} = this.props
+        // const cellId=Math.floor(Math.random()*this.size);
         // console.log("COMP:",cellId,GAME[cellId],GAME)
-        // console.log(cellId)
+        const cellId = await this.getMove(round);
+        console.log(cellId)
         if (GAME[cellId]) return this.computerMove(e,n+1)
         GAME[cellId]=COMPUTER
         this.requestMove(COMPUTER,cellId);
-        const item=e.target.parentNode.childNodes[cellId]
-        item.innerText="O"
-        item.disabled=true
+        // const item=e.target.parentNode.childNodes[cellId]
+        // item.innerText="O"
+        // item.disabled=true
         // console.log("O<",item.id)
+        this.checkWinner(COMPUTER)
     }
 
     dblClick = (e) => {
@@ -107,7 +119,7 @@ class Field extends React.Component {
         let table = []
         GAME=[]; for (var i=0;i<this.size;i++) GAME[i]=0;
         for (let item = 0; item < this.size; item++) 
-            table.push(<Cell key={item} item={item} clickMove={this.clickMove}/>)
+            table.push(<Cell key={item} item={item} clickMove={this.clickMove} computerMove={this.computerMove}/>)
         return table
     }
 
