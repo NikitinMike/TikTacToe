@@ -8,15 +8,18 @@ class Cell extends React.Component {
 
     state = {user:"",disabled:false,id:0}
 
-    onClickItem = (e) => {
+    // onClickItem = (e) => {
+    onClickItem = () => {
         // this.props.clickMove(e.target.id);
         this.props.clickMove(this.state.id);
         this.setState({user: USER[this.props.game[this.props.item]+1]})
+        // this.setState({user: this.props.item})
         this.setState({disabled:true});
     }
 
     componentDidMount() {
         this.setState({id:this.props.item});
+        this.setState({user:this.props.item});
     }
     
     render () {
@@ -30,18 +33,29 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {gameover:false,game:[],move:0}
+    state = {gameover:false,game:[],move:0,board:[]}
     message="GAME OVER!"
     size = 0
     GAME=[]
 
-    clickMove = (cell) => {
-        // console.log(cell)
-        if (this.requestMove(this.GAME[cell]=PLAYER,+cell)) 
-            this.checkWinner(PLAYER);
-        this.computerMove(0)
-        // console.log(o)
-        // console.log(this.GAME)
+    freeCells = () => this.GAME.map(function (val, index) { return (val)?NaN:index;})
+
+    clickMove = (cellX) => {
+        // const {round} = this.props
+        // if (this.requestMove(this.GAME[cell]=PLAYER,+cell)) 
+        console.log(cellX)
+        this.GAME[cellX]=PLAYER
+        // this.checkWinner(PLAYER);
+        var cells = this.freeCells().filter(v=>!isNaN(v));
+        if(cells.length>0) {
+            const cellO=cells[Math.floor(Math.random()*cells.length)];
+            // this.computerMove(0)
+            this.GAME[cellO]=COMPUTER
+            cells = this.freeCells().filter(v=>!isNaN(v));
+            console.log(cellO)
+            console.log(cells)
+            console.log(this.GAME)    
+        } else this.changeBanner(0)
     }
 
     changeBanner = (winner) =>{
@@ -51,56 +65,44 @@ class Field extends React.Component {
         this.setState({gameover:true})
     }
 
-    checkWinner = async (user) => {
-        let response = await fetch(`http://localhost:8080/check/${this.props.round}/${user}`)
-        let result = await response.json();
-        if(result.success) this.changeBanner(user);
-        if(!this.GAME.some(elem => (elem===0))){
-            this.changeBanner(0);
-            this.requestMove(0,0);
-        }
-    }
+    // checkWinner = async (user) => {
+    //     let response = await fetch(`http://localhost:8080/check/${this.props.round}/${user}`)
+    //     let result = await response.json();
+    //     if(result.success) this.changeBanner(user);
+    //     if(!this.GAME.some(elem => (elem===0))){
+    //         this.changeBanner(0);
+    //         this.requestMove(0,0);
+    //     }
+    // }
 
-    requestMove = async (user,cell) => {
-        // console.log(user,":[",cell,"]:",this.GAME[cell])
-        // if(this.GAME[cell]!==0)return false;
-        // console.log("MOVE:",USER[user+1],'=>',cell)
-        const {dimension,round} = this.props
-        const col=cell%dimension
-        const row=(cell-col)/dimension
-        // setTimeout(async function() {
-            let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${user}/${row}/${col}`)
-            let result = await response.json();
-            return result.success;
-        // }, 1000);
-    }
+    // requestMove = async (user,cell) => {
+    //     // console.log(user,":[",cell,"]:",this.GAME[cell])
+    //     // if(this.GAME[cell]!==0)return false;
+    //     // console.log("MOVE:",USER[user+1],'=>',cell)
+    //     const {dimension,round} = this.props
+    //     const col=cell%dimension
+    //     const row=(cell-col)/dimension
+    //     // setTimeout(async function() {
+    //         let response = await fetch(`http://localhost:8080/move/${dimension}/${round}/${user}/${row}/${col}`)
+    //         let result = await response.json();
+    //         return result.success;
+    //     // }, 1000);
+    // }
     
-    getMove = async (round) => {
-        // setTimeout(async function() {
-            let response = await fetch(`http://localhost:8080/computer/${round}`)
-            let result = await response.json();
-            return result.cell;
-        // }, 1000);
-    }
+    // getMove = async (round) => {
+    //     // setTimeout(async function() {
+    //         let response = await fetch(`http://localhost:8080/computer/${round}`)
+    //         let result = await response.json();
+    //         return result.cell;
+    //     // }, 1000);
+    // }
 
-    computerMove = async (n) => {
-        if(n>this.size) return;
-        const {round} = this.props
-        // const cellId=Math.floor(Math.random()*this.size);
-        const cellId = await this.getMove(round);
-        console.log("O>",cellId)
-        if (this.GAME[cellId]) return this.computerMove(n+1)
-        this.GAME[cellId]=COMPUTER
-        if(this.requestMove(COMPUTER,cellId))
-            this.checkWinner(COMPUTER);
-        console.log(this.GAME)
-        }
-
-    dblClick = (e) => {
+    restart = (e) => {
         window.location = "/"+this.props.dimension;
+        // board[cellId]
     }
 
-    createTable = (dim) => {
+    initBoard = (dim) => {
         this.size=dim*dim
         let board = []
         this.GAME=[]; for (var i=0;i<this.size;i++) this.GAME[i]=0;
@@ -111,10 +113,11 @@ class Field extends React.Component {
     }
 
     render () {
+        const width=50*this.props.dimension
         return (
-            <div className="field" style={{maxWidth: 50*this.props.dimension}} id="gameField" onDoubleClick={this.dblClick}>
-                {this.createTable(this.props.dimension)}
-                <button onClick={this.dblClick} >[{this.props.round}] RESTART</button>
+            <div className="field" style={{maxWidth:width}} id="board" onDoubleClick={this.restart}>
+                {this.initBoard(this.props.dimension)}
+                <button onClick={this.restart} >[{this.props.round}] RESTART</button>
                 <div className="win" id="win" hidden={!this.state.gameover}>{this.message}</div>
             </div>
         )
