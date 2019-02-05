@@ -43,7 +43,7 @@ class Field extends React.Component {
     clickMove = (cellX) => {
         // const {round} = this.props
         // if (this.requestMove(this.GAME[cell]=PLAYER,+cell)) 
-        console.log(cellX)
+        console.log('X:',cellX)
         this.GAME[cellX]=PLAYER
         // this.checkWinner(PLAYER);
         var cells = this.freeCells().filter(v=>!isNaN(v));
@@ -52,7 +52,7 @@ class Field extends React.Component {
             // this.computerMove(0)
             this.GAME[cellO]=COMPUTER
             cells = this.freeCells().filter(v=>!isNaN(v));
-            console.log(cellO)
+            console.log('O:',cellO)
             console.log(cells)
             console.log(this.GAME)    
         } else this.changeBanner(0)
