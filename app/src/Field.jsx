@@ -6,31 +6,32 @@ const USER=['O','','Х']
 
 class Cell extends React.Component {
 
-    state = {user:"",disabled:false,id:0}
+    state = {sign:"",disabled:false,id:0}
 
     // onClickItem = (e) => {
     onClickItem = () => {
         // this.props.clickMove(e.target.id);
         this.props.clickMove(this.state.id);
-        this.move(USER[this.props.game[this.props.item]+1])
+        // this.move(USER[this.props.game[this.props.item]+1])
+        this.move("X")
     }
 
-    move = (user) => {
+    move = (sign) => {
         // this.setState({user: USER[this.props.game[this.props.item]+1]})
         // this.setState({user: this.props.item})
-        this.setState({user: user})
+        this.setState({sign: sign})
         this.setState({disabled:true});
     }
 
     componentDidMount() {
         this.setState({id:this.props.item});
-        this.setState({user:this.props.item});
+        this.setState({sign:this.props.sign});
     }
     
     render () {
         return (
-            <button className="flex-itm" id={this.props.item} onClick={this.onClickItem} disabled={this.state.disabled}>
-                {this.state.user}   
+            <button className="flex-itm" id={this.state.id} onClick={this.onClickItem} disabled={this.state.disabled}>
+                {this.state.sign}   
             </button>
         )
     }
@@ -56,6 +57,7 @@ class Field extends React.Component {
             const cellO=cells[Math.floor(Math.random()*cells.length)];
             // this.computerMove(0)
             this.GAME[cellO]=COMPUTER
+            // this.state.board[cellO].props.sign='O'
             console.log(this.state.board[cellO])
             cells = this.freeCells().filter(v=>!isNaN(v));
             console.log('O:',cellO)
@@ -115,7 +117,7 @@ class Field extends React.Component {
         this.GAME=[]; for (var i=0;i<this.size;i++) this.GAME[i]=0;
         // this.setState({game:this.GAME})
         for (let item = 0; item < this.size; item++) 
-            board.push(<Cell key={item} item={item} clickMove={this.clickMove} computerMove={this.computerMove} game={this.GAME}/>)
+            board.push(<Cell key={item} item={item} clickMove={this.clickMove} sign={item}/>)
         return board;
     }
 
