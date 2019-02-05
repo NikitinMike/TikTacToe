@@ -12,8 +12,13 @@ class Cell extends React.Component {
     onClickItem = () => {
         // this.props.clickMove(e.target.id);
         this.props.clickMove(this.state.id);
-        this.setState({user: USER[this.props.game[this.props.item]+1]})
+        this.move(USER[this.props.game[this.props.item]+1])
+    }
+
+    move = (user) => {
+        // this.setState({user: USER[this.props.game[this.props.item]+1]})
         // this.setState({user: this.props.item})
+        this.setState({user: user})
         this.setState({disabled:true});
     }
 
@@ -33,7 +38,7 @@ class Cell extends React.Component {
 
 class Field extends React.Component {
 
-    state = {gameover:false,game:[],move:0,board:[]}
+    state = {gameover:false,board:[]} // game:[],move:0,
     message="GAME OVER!"
     size = 0
     GAME=[]
@@ -51,6 +56,7 @@ class Field extends React.Component {
             const cellO=cells[Math.floor(Math.random()*cells.length)];
             // this.computerMove(0)
             this.GAME[cellO]=COMPUTER
+            console.log(this.state.board[cellO])
             cells = this.freeCells().filter(v=>!isNaN(v));
             console.log('O:',cellO)
             console.log(cells)
@@ -103,6 +109,7 @@ class Field extends React.Component {
     }
 
     initBoard = (dim) => {
+        // console.log(dim)
         this.size=dim*dim
         let board = []
         this.GAME=[]; for (var i=0;i<this.size;i++) this.GAME[i]=0;
@@ -112,11 +119,16 @@ class Field extends React.Component {
         return board;
     }
 
+    componentDidMount() {
+        const dim = this.props.dimension
+        this.setState({board:this.initBoard(dim)})
+    }
+
     render () {
         const width=50*this.props.dimension
         return (
             <div className="field" style={{maxWidth:width}} id="board" onDoubleClick={this.restart}>
-                {this.initBoard(this.props.dimension)}
+                {this.state.board}
                 <button onClick={this.restart} >[{this.props.round}] RESTART</button>
                 <div className="win" id="win" hidden={!this.state.gameover}>{this.message}</div>
             </div>
