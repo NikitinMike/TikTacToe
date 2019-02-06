@@ -2,6 +2,7 @@ import React from 'react'
 
 const PLAYER=+1
 const COMPUTER=-1
+// const USER=[{COMPUTER:'O',0:'',PLAYER:'Х'}]
 const USER=['O','','Х']
 
 class Cell extends React.Component {
@@ -24,7 +25,7 @@ class Cell extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({id:this.props.item});
+        this.setState({id:this.props.id});
         this.setState({sign:this.props.sign});
     }
     
@@ -42,27 +43,30 @@ class Field extends React.Component {
     state = {gameover:false,board:[]} // game:[],move:0,
     message="GAME OVER!"
     size = 0
+    freeCells=new Set()
     GAME=[]
 
-    freeCells = () => this.GAME.map(function (val, index) { return (val)?NaN:index;})
+    randomCell() {return Array.from(this.freeCells)[Math.floor(Math.random()*this.freeCells.size)]}
 
-    clickMove = (cellX) => {
+    clickMove = (XC) => {
         // const {round} = this.props
         // if (this.requestMove(this.GAME[cell]=PLAYER,+cell)) 
-        console.log('X:',cellX)
-        this.GAME[cellX]=PLAYER
+        console.log('X:',XC)
+        this.GAME[XC]=PLAYER
         // this.checkWinner(PLAYER);
-        var cells = this.freeCells().filter(v=>!isNaN(v));
-        if(cells.length>0) {
-            const cellO=cells[Math.floor(Math.random()*cells.length)];
+        this.freeCells.delete(XC)
+        if(this.freeCells.size>0) {
+            const OC=this.randomCell();
+            this.freeCells.delete(OC)
             // this.computerMove(0)
-            this.GAME[cellO]=COMPUTER
-            // this.state.board[cellO].props.sign='O'
-            console.log(this.state.board[cellO])
-            cells = this.freeCells().filter(v=>!isNaN(v));
-            console.log('O:',cellO)
-            console.log(cells)
-            console.log(this.GAME)    
+            this.GAME[OC]=COMPUTER
+            var board = this.state.board
+            this.setState({board:board})
+            // board[OC].props.sign='O'
+            // console.log(this.state.board[OC])
+            console.log('O:',OC)
+            console.log(this.freeCells)
+            // console.log(this.GAME)
         } else this.changeBanner(0)
     }
 
@@ -112,18 +116,21 @@ class Field extends React.Component {
 
     initBoard = (dim) => {
         // console.log(dim)
-        this.size=dim*dim
-        let board = []
-        this.GAME=[]; for (var i=0;i<this.size;i++) this.GAME[i]=0;
+        this.size = dim*dim
+        this.GAME = []; 
+        let board = [];
+        for (var i = 0; i < this.size; i++) {
+            this.freeCells.add(i); this.GAME[i]=0; 
+            board.push(<Cell key={i} id={i} clickMove={this.clickMove} sign={i}/>) // USER[this.GAME[i]+1]
+        }
         // this.setState({game:this.GAME})
-        for (let item = 0; item < this.size; item++) 
-            board.push(<Cell key={item} item={item} clickMove={this.clickMove} sign={item}/>)
         return board;
     }
 
     componentDidMount() {
         const dim = this.props.dimension
         this.setState({board:this.initBoard(dim)})
+        // console.log(this.freeCells)
     }
 
     render () {
