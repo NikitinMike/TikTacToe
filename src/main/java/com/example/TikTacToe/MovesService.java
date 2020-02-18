@@ -11,41 +11,38 @@ import java.util.stream.Collectors;
 @Service
 public class MovesService {
 
-    @Autowired MovesRepository movesRepository;
+  @Autowired
+  MovesRepository movesRepository;
 
-    public Move create(int cell, int turn, int round, int row, int col, int user) {
-        Move move=new Move(cell,turn,(long)round,row,col,user);
-        movesRepository.save(move);
-        return move;
-    }
+  public Move create(int cell, int turn, int round, int row, int col, int user) {
+    Move move = new Move(cell, turn, (long) round, row, col, user);
+    movesRepository.save(move);
+    return move;
+  }
 
-    private Sort sort() {
-        return new Sort(Sort.Direction.DESC, "id");
-    }
+  private Sort sort() {
+    return new Sort(Sort.Direction.DESC, "id");
+  }
 
-    public  List<Move> getAll() {
-        return movesRepository.findAll(sort());
-    }
+  public List<Move> getAll() {
+    return movesRepository.findAll(sort());
+  }
 
-    public  List<Move> getRound(int round) {
-        return movesRepository.findAllByRound((long)round);
-    }
+  public List<Move> getRound(int round) {
+    return movesRepository.findAllByRound(round);
+  }
 
-    public  List<Move> getUserRound(int user,int round) {
-        return movesRepository.findAllByRoundAndUser((long)round,user);
-    }
+  public List<Move> getUserRound(int user, int round) {
+    return movesRepository.findAllByRoundAndUser(round, user);
+  }
 
-    public Set<Long> listRounds() {
-//        List<Move> rounds = movesRepository.findDistinctByUser(0);
-        List<Move> moves = movesRepository.findDistinctByTurn(1);
-//        moves.forEach(t-> System.out.println(t.getRound()));
-        return moves.stream().map(m -> m.getRound()).collect(Collectors.toSet());
-    }
+  public Set<Long> listRounds() {
+    List<Move> moves = movesRepository.findDistinctByTurn(1);
+    return moves.stream().map(Move::getRound).collect(Collectors.toSet());
+  }
 
-    public boolean isCellFree(int cell, int turn, int round, int row, int col, int user) {
-        Move move = movesRepository.findByRoundAndCell(round,cell);
-        if (move==null) return true;
-//        if (move.getUser()==user)
-        return false;
-    }
+  public boolean isCellFree(int cell, int turn, int round, int row, int col, int user) {
+    Move move = movesRepository.findByRoundAndCell(round, cell);
+    return move == null;
+  }
 }

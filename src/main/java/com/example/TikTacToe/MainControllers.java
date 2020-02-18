@@ -11,88 +11,84 @@ import java.util.Set;
 
 import static java.lang.Math.random;
 
-//@Rest
 @Controller
-@CrossOrigin // (origins = "http://localhost:3000")
+@CrossOrigin
 public class MainControllers {
 
-    @Autowired MovesService moves;
-    int turn=0;
-    int round=0;
-    int dimension = 4;
+  @Autowired
+  MovesService moves;
+  int turn = 0;
+  int round = 0;
+  int dimension = 4;
 
-    @RequestMapping({"/welcome","/"})
-    public String welcome(){
-//        return "WELCOME!";
-        return "welcome";
-    }
+  @RequestMapping({"/welcome", "/"})
+  public String welcome() {
+    return "welcome";
+  }
 
-//    @ResponseBody
-    @RequestMapping("/{dimension}")
-    public String resize(@PathVariable int dimension,Model model){
-        this.dimension=dimension;
-        model.addAttribute("dimension", dimension);
-        return "welcome";
-//        return dimension;
-    }
+  @RequestMapping("/{dimension}")
+  public String resize(@PathVariable int dimension, Model model) {
+    this.dimension = dimension;
+    model.addAttribute("dimension", dimension);
+    return "welcome";
+  }
 
-    @RequestMapping("/moves")
-    public String /*List<Move>*/ getAll(Model model){
-        model.addAttribute("moves", moves.getAll());
-        return "moves";
-    }
+  @RequestMapping("/moves")
+  public String getAll(Model model) {
+    model.addAttribute("moves", moves.getAll());
+    return "moves";
+  }
 
-    @ResponseBody
-    @RequestMapping("/move/{dimension}/{round}/{user}/{row}/{col}")
-//    public Move move(
-    public String move(
-        @PathVariable int dimension,
-        @PathVariable int round,
-        @PathVariable int user,
-        @PathVariable int row,
-        @PathVariable int col
-    ) {
-        turn = (this.round == round) ? turn + 1 : 1;
-        this.round = round;
-        if(user==0) turn=0;
+  @ResponseBody
+  @RequestMapping("/move/{dimension}/{round}/{user}/{row}/{col}")
+  public String move(
+      @PathVariable int dimension,
+      @PathVariable int round,
+      @PathVariable int user,
+      @PathVariable int row,
+      @PathVariable int col
+  ) {
+    turn = (this.round == round) ? turn + 1 : 1;
+    this.round = round;
+      if (user == 0) {
+          turn = 0;
+      }
 
-        int cell = row*dimension+col;
-        if(!moves.isCellFree(cell,turn,round,row,col,user))
-            return "{\"success\":false}";
-        Move m=moves.create(cell,turn,round,row,col,user);
+    int cell = row * dimension + col;
+      if (!moves.isCellFree(cell, turn, round, row, col, user)) {
+          return "{\"success\":false}";
+      }
+    Move m = moves.create(cell, turn, round, row, col, user);
 
-        System.out.println(m);
-        return "{\"success\":true}";
+    System.out.println(m);
+    return "{\"success\":true}";
 //        return m;
-    }
+  }
 
-    @RequestMapping("/result/{round}")
-    public String result(@PathVariable int round,Model model){
-        List<Move> turns=moves.getRound(round);
-        model.addAttribute("moves", turns);
-        turns.forEach(t-> System.out.println(t));
-        return "welcome";
-    }
+  @RequestMapping("/result/{round}")
+  public String result(@PathVariable int round, Model model) {
+    List<Move> turns = moves.getRound(round);
+    model.addAttribute("moves", turns);
+    turns.forEach(System.out::println);
+    return "welcome";
+  }
 
-    @ResponseBody
-    @RequestMapping("/results")
-    public Set<Long> result(){
-//        List<Long> rounds=moves.listRounds();
-//        rounds.forEach(t-> System.out.println(t));
-        return moves.listRounds();
-    }
+  @ResponseBody
+  @RequestMapping("/results")
+  public Set<Long> result() {
+    return moves.listRounds();
+  }
 
-    @ResponseBody
-    @RequestMapping("/computer/{round}")
-    public JSONObject move(@PathVariable int round)
-    {
-        int dim=round/1000;
-        int size=dim*dim;
-        int cell = (int) (random()*size);
-        JSONObject json = new JSONObject();
-        json.put("cell", cell);
-        System.out.println("COMPUTER:"+json);
-        return json;
-    }
+  @ResponseBody
+  @RequestMapping("/computer/{round}")
+  public JSONObject move(@PathVariable int round) {
+    int dim = round / 1000;
+    int size = dim * dim;
+    int cell = (int) (random() * size);
+    JSONObject json = new JSONObject();
+    json.put("cell", cell);
+    System.out.println("COMPUTER:" + json);
+    return json;
+  }
 
 }

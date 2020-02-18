@@ -1,69 +1,86 @@
 package com.example.TikTacToe;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@CrossOrigin // (origins = "http://localhost:3000")
+@CrossOrigin
 public class CheckBoard {
 
-    @Autowired
-    MovesService moves;
+  @Autowired
+  MovesService moves;
 
-    int dim;
-    int[][]board;
+  int dim;
+  int[][] board;
 
-    void showBoard(){
-        System.out.println();
-        for (int i=0;i<dim;i++) {
-            for (int j = 0; j<dim; j++)
-                System.out.printf("%2d",board[i][j]);
-            System.out.println();
+  void showBoard() {
+    System.out.println();
+    for (int i = 0; i < dim; i++) {
+      for (int j = 0; j < dim; j++) {
+        System.out.printf("%2d", board[i][j]);
+      }
+      System.out.println();
+    }
+  }
+
+  boolean checkRowCol(int user) {
+    for (int i = 0; i < dim; i++) { // check rows
+      boolean row = true, col = true;
+      for (int j = 0; j < dim; j++) {
+        if (board[i][j] != user) {
+          row = false;
         }
-    }
-
-    boolean checkRowCol(int user) {
-        for (int i=0;i<dim;i++) { // check rows
-            boolean row=true,col=true;
-            for (int j = 0; j < dim; j++) {
-                if (board[i][j] != user) row = false;
-                if (board[j][i] != user) col = false;
-            }
-            if (col||row) return true;
+        if (board[j][i] != user) {
+          col = false;
         }
-        return false;
+      }
+      if (col || row) {
+        return true;
+      }
     }
+    return false;
+  }
 
-    boolean checkDiags(int user) {
-        boolean d1=true,d2=true;
-        for (int i=0;i<dim;i++) { // check both diag
-            if (board[i][i] != user) d1 = false;
-            if (board[i][dim-1-i] != user) d2 = false;
-        }
-        return (d1||d2);
+  boolean checkDiags(int user) {
+    boolean d1 = true, d2 = true;
+    for (int i = 0; i < dim; i++) { // check both diag
+      if (board[i][i] != user) {
+        d1 = false;
+      }
+      if (board[i][dim - 1 - i] != user) {
+        d2 = false;
+      }
     }
+    return (d1 || d2);
+  }
 
-    @ResponseBody
-    @RequestMapping(value = "/check/{round}/{user}", method = RequestMethod.GET, produces = "application/json")
-    public String check(@PathVariable int round,@PathVariable int user) {
+  @ResponseBody
+  @RequestMapping(value = "/check/{round}/{user}", method = RequestMethod.GET, produces = "application/json")
+  public String check(@PathVariable int round, @PathVariable int user) {
 
-        dim=round/1000;
+    dim = round / 1000;
 
-        List<Move> turns=moves.getUserRound(user,round);
-//        turns.forEach(t-> System.out.println(t));
-        board = new int[dim][dim];
+    List<Move> turns = moves.getUserRound(user, round);
+    board = new int[dim][dim];
 
-        for (Move move:turns)
-            board[move.getRow()][move.getCol()]=user;
-        showBoard();
-
-        if(checkRowCol(user)) return "{\"success\":true}"; // "WIN by ROW!"
-        if(checkDiags(user)) return "{\"success\":true}"; // "WIN by DIAG!"
-        return "{\"success\":false}"; // "LOOSE"
+    for (Move move : turns) {
+      board[move.getRow()][move.getCol()] = user;
     }
+    showBoard();
+
+    if (checkRowCol(user)) {
+      return "{\"success\":true}"; // "WIN by ROW!"
+    }
+    if (checkDiags(user)) {
+      return "{\"success\":true}"; // "WIN by DIAG!"
+    }
+    return "{\"success\":false}"; // "LOOSE"
+  }
 
 }
